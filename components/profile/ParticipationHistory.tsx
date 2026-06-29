@@ -14,17 +14,21 @@ interface HistoryItem {
 
 export function ParticipationHistory() {
   const [items, setItems] = useState<HistoryItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const allPosts = getAvailableResearchPosts(mockPosts);
     setItems(getParticipationHistory().map((record) => ({ record, post: allPosts.find((post) => post.id === record.postId) })));
+    setLoaded(true);
   }, []);
 
   return (
     <section>
       <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">History</p><h1 className="mt-1 text-2xl font-black tracking-tight text-ink">Participated</h1><p className="mt-1 text-sm text-slate-500">Research you completed with this browser profile.</p></div>
       <div className="mt-5 space-y-3">
-        {items.map(({ record, post }) => {
+        {!loaded && [0, 1, 2].map((item) => <div key={item} className="h-24 animate-pulse rounded-card border border-slate-200 bg-white/70" aria-hidden="true" />)}
+        {!loaded && <p className="sr-only" role="status">Loading participation history</p>}
+        {loaded && items.map(({ record, post }) => {
           const completedDate = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(record.completedAt));
           return post ? (
             <a href={`/research/${post.id}`} key={record.postId} className="block">
@@ -37,7 +41,7 @@ export function ParticipationHistory() {
             <Card key={record.postId} className="p-4"><p className="text-sm font-bold text-slate-500">Research unavailable</p><p className="mt-1 text-xs text-slate-400">Completed {completedDate}</p></Card>
           );
         })}
-        {items.length === 0 && <Card className="p-8 text-center"><p className="text-sm font-bold text-ink">No completed research yet</p><p className="mt-1 text-xs text-slate-500">Your native form participation will appear here.</p><a href="/" className="mt-4 inline-block text-xs font-bold text-brand">Explore research</a></Card>}
+        {loaded && items.length === 0 && <Card className="p-8 text-center"><div className="mx-auto grid h-11 w-11 place-items-center rounded-2xl bg-brand-soft text-lg font-black text-brand-dark">✓</div><p className="mt-3 text-sm font-bold text-ink">No completed research yet</p><p className="mt-1 text-xs leading-5 text-slate-500">Your native form participation will appear here.</p><a href="/" className="mt-4 inline-flex min-h-10 items-center rounded-xl px-3 text-xs font-bold text-brand transition hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">Explore research</a></Card>}
       </div>
     </section>
   );

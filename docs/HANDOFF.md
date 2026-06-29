@@ -9,9 +9,9 @@ The repository contains no backend, database, authentication, Supabase client, A
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** Product Planning Documentation v0.4
-- **Sprint state:** documentation-only planning layer is complete; runtime remains Client Storage Foundation v0.3.
-- **Objective:** begin **Professional Native Survey UX v0.4** next, without pulling in unrelated planned/future features.
+- **Product iteration:** v0.4D — Final Release QA
+- **Sprint state:** v0.4A–v0.4C implementation is code-complete; static, lint, and production-build gates pass.
+- **Objective:** complete manual browser sign-off before commit/push. Interactive local-browser automation was unavailable during v0.4D, so the release is not yet recorded as browser-verified.
 
 ## Completed work
 
@@ -20,7 +20,7 @@ The repository contains no backend, database, authentication, Supabase client, A
 - Research cards with progress/status, internal detail CTA, visual action counts, and completed/View Research behavior.
 - Six-step Create Research Wizard with separate step components and session publish.
 - External-form link choice plus Google Forms, Microsoft Forms, Typeform, and generic URL compatibility.
-- Native form builder/renderer for short text, paragraph, multiple choice, and checkbox questions.
+- Professional native form builder/renderer for short text, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time.
 - Required-field validation, native submission, browser-local duplicate prevention, submitted success, read-only revisit, and local detail count increment.
 - Dynamic `/research/[id]` detail route and `/profile` participation-history route.
 - Blue/purple design system, restrained orange accent, CSS-only Valida logo, UI primitives, design tokens, typed mock/default data, and storage helper.
@@ -28,6 +28,10 @@ The repository contains no backend, database, authentication, Supabase client, A
 - Final validation on June 28, 2026: `npm run lint` passed with no warnings/errors and `npm run build` generated `/`, `/profile`, and `/research/[id]` successfully.
 - Client Storage Foundation validation on June 29, 2026: lint passed cleanly, the production build generated all preserved routes, and the development server returned HTTP 200 for `/`.
 - Product Planning Documentation v0.4 validation on June 29, 2026: lint and production build passed; the sprint changed documentation only.
+- v0.4A professionalized the builder, survey renderer, success/read-only states, and detail presentation.
+- v0.4B added seven rich types while preserving the string/string-array answer contract and schema-v1 storage.
+- v0.4C added wizard focus containment, responsive/safe-area polish, duplicate-option validation, loading/empty/error states, and shared accessibility treatment.
+- v0.4D fixed external HTTP/HTTPS link validation and custom-control focus visibility; lint and production build passed on June 29, 2026.
 
 ## Current issues
 
@@ -36,29 +40,29 @@ The repository contains no backend, database, authentication, Supabase client, A
 3. Search, tabs, reactions, bookmarks, Explore, My Research, comments, and sharing are presentational.
 4. External form completion is explicitly unverified and must stay that way until a real integration exists.
 5. Target/deadline states do not automatically close research.
-6. Wizard/dialog accessibility needs a focus-trap and focus-restoration audit; no automated test suite exists.
+6. No automated unit/integration/end-to-end suite exists. Wizard focus trapping/restoration is implemented but still needs manual assistive-technology/browser sign-off.
 7. The cloud-synced workspace can generate duplicate files with ` 2` suffixes, including stale Markdown copies. Unsuffixed files are canonical; TypeScript excludes duplicate `.ts`/`.tsx`. Do not edit suffix copies or delete sync artifacts casually.
 
 ## Next priorities
 
-1. Professionalize the native survey question editor while preserving the four existing question types and data contract.
-2. Add creation-time validation and preview parity with Research Detail.
-3. Audit keyboard/focus behavior and add focused survey/storage regression coverage.
+1. Manually test Create Research end-to-end with all 11 native question types, validation, preview, and publish.
+2. Verify submit, duplicate prevention, completed/read-only revisit, Profile History, response-count sync, and refresh persistence.
+3. Verify mobile layouts, keyboard/safe-area behavior, and external links; record the outcome before commit/push.
 
-Exact goals, files, dependencies, and acceptance criteria are in `NEXT_TASK.md`.
+The release checklist and current verification boundary are recorded in `PROJECT_STATUS.md`; the older `NEXT_TASK.md` implementation plan is historical until it is deliberately replaced.
 
 ## Recommended first task
 
-Start with **Professional Native Survey UX v0.4, Priority 1 — Professional question editor foundation** in `NEXT_TASK.md`. Read `FEATURE_MATRIX.md` first: uploads, translation, AI, profiles/bookmarks, analytics, credits, notifications, and all backend/platform work are explicitly excluded from this sprint.
+Start with the manual v0.4 release checklist in `PROJECT_STATUS.md` under Remaining Testing. Do not begin another feature sprint or describe v0.4 as browser-verified until that pass succeeds.
 
 ## Files to read first
 
 1. `docs/FEATURE_MATRIX.md` — authoritative implemented/next/planned/future boundaries.
-2. `docs/NEXT_TASK.md` — Professional Native Survey UX v0.4 contract.
-3. `docs/PROJECT_STATUS.md` and `docs/SPRINT_HISTORY.md` — implementation truth and milestone sequence.
+2. `docs/PROJECT_STATUS.md` and `docs/SPRINT_HISTORY.md` — release status, remaining QA, and milestone sequence.
+3. `docs/CHANGELOG.md` — v0.4A–v0.4D implementation and validation record.
 4. `docs/DEVELOPMENT_RULES.md` — scope and quality guardrails.
 5. `lib/types.ts` and `lib/research-defaults.ts` — native survey contracts/defaults.
-6. `components/research/CreateResearchWizard.tsx`, `NativeFormBuilder.tsx`, `NativeFormRenderer.tsx`, and `PreviewPublishStep.tsx` — next-sprint implementation surface.
+6. `components/research/CreateResearchWizard.tsx`, `NativeFormBuilder.tsx`, `NativeFormRenderer.tsx`, and `PreviewPublishStep.tsx` — v0.4 release surface.
 7. `lib/browser-storage.ts`, `lib/research-storage.ts`, and `lib/participation-storage.ts` — stable versioned browser-state contract.
 
 Use `COMPONENT_ARCHITECTURE.md`, `DATABASE.md`, and `UI_GUIDELINES.md` as references rather than inferring intended boundaries from markup.
@@ -87,4 +91,4 @@ Use `COMPONENT_ARCHITECTURE.md`, `DATABASE.md`, and `UI_GUIDELINES.md` as refere
 
 ## Future sprint recommendation
 
-Run **Professional Native Survey UX v0.4** exactly as scoped in `NEXT_TASK.md`. After it passes its UX, accessibility, test, lint, and build gates, reconsider Profile/Bookmarks versus discovery from the roadmap. Credits, analytics, AI, uploads, translation, and backend work remain later phases and must not be smuggled into the survey sprint.
+Finish manual v0.4 browser sign-off, then commit/push only when explicitly requested. Do not start another sprint from this handoff. Credits, analytics, AI, uploads, translation, and backend work remain later phases.

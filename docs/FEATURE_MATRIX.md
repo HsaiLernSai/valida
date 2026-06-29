@@ -6,7 +6,7 @@
 | --- | --- |
 | **Done** | Implemented and working to the explicitly limited frontend-prototype contract. It does not imply production infrastructure. |
 | **Current MVP** | Usable today, but intentionally narrow or incomplete as a product capability. |
-| **Next** | The focus of the next coding sprint: **Professional Native Survey UX v0.4**. |
+| **Next** | Approved focus of a future coding sprint. No next sprint is selected while v0.4 awaits manual browser sign-off. |
 | **Planned** | Accepted product direction, but not in the next sprint. |
 | **Future** | Longer-horizon idea requiring later product/technical decisions. Not implemented. |
 | **Out of scope now** | Explicitly prohibited in the current frontend-only phase. |
@@ -20,8 +20,8 @@ Status is singular per row. The implementation-truth column records visible shel
 | Community Feed | **Done** | Responsive mock feed, compact cards, completion state, local adjusted counts, sidebars, and mobile navigation work. | Search, sorting, reactions, and live community data are separate features. |
 | Create Research | **Done** | Six-step frontend wizard publishes to the current tab session. | No drafts, server persistence, ownership, or collaboration. |
 | Research Detail | **Done** | `/research/[id]` resolves mock/session research and renders native or external response flow. | No public server-backed permalink guarantee. |
-| Native Survey Builder | **Next** | Basic builder already supports four question types, required state, choices, delete, and preview. | Professional Native Survey UX v0.4 will improve creation clarity and editing quality without backend scope. |
-| Native Survey Response | **Current MVP** | Required validation, local submit, idempotency by post ID, read-only revisit, and completed state work. | Needs stronger form UX/accessibility and automated coverage; responses remain browser-local. |
+| Native Survey Builder | **Current MVP** | Professional builder supports short answer, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time; required state, option editing, delete, and preview work. | Advanced logic, uploads, and additional field types remain future work. |
+| Native Survey Response | **Current MVP** | All eleven native types render with required/type validation, local submit, idempotency by post ID, read-only revisit, and completed state. | Needs automated browser coverage; responses remain browser-local. |
 | External Forms | **Done** | Google Forms, Microsoft Forms, Typeform, and other URLs open from Research Detail only with an unverified warning. | Provider verification/integration is future work. |
 | Profile | **Current MVP** | `/profile` exists as a browser-local Participated surface. | No editable/public identity, settings, ownership, or account. |
 | Participation History | **Done** | Lists local native completions, dates, detail links, and graceful missing-session-post fallback. | Not cross-device or account-backed. |
@@ -52,6 +52,6 @@ Status is singular per row. The implementation-truth column records visible shel
 
 ## Next sprint boundary
 
-**Professional Native Survey UX v0.4** is the next coding sprint. It is limited to making the existing native survey creation and preview experience feel deliberate, clear, and product-grade. It must preserve the current four question types, external forms, routes, component architecture, browser storage, and frontend-only constraints.
+**Professional Native Survey UI v0.4A** and **Rich Native Question Types v0.4B** are implemented. No subsequent coding sprint is selected by this matrix. The current native workflow must continue to preserve external forms, routes, component architecture, browser storage, and frontend-only constraints.
 
 It does **not** include new uploads, translation, AI, analytics, credits, authentication, backend services, database work, or cloud storage.

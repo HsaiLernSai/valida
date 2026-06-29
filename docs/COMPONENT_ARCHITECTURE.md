@@ -41,7 +41,7 @@ The research card deliberately routes Open Research/View Research to `/research/
 | `ResearchGoalStep` | Selects one of the six research goals. |
 | `BasicInfoStep` | Captures title, description, estimated time, and embeds response-method configuration. |
 | `ResponseMethodStep` | Switches external/native modes; shows external URL input or `NativeFormBuilder`. |
-| `NativeFormBuilder` | Adds/deletes/reorders through current array order, edits labels, toggles required, and manages choice options for four question types. |
+| `NativeFormBuilder` | Adds/deletes questions, changes among 11 native types, edits labels, toggles required, and manages unique options for multiple choice, checkbox, and dropdown. |
 | `TargetAudienceStep` | Manages `string[]` audience tags, suggested-tag insertion, custom entry, and removal. |
 | `ResponseSettingsStep` | Configures limited/unlimited responses and deadline/no-deadline timing with conditional inputs. |
 | `HashtagsStep` | Manages suggested/custom hashtags. |

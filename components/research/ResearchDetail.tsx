@@ -36,8 +36,8 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
     setResponseCount(getLocalResponseCount(post));
   };
 
-  if (!hydrated && !post) return <div className="grid min-h-screen place-items-center bg-app-gradient text-sm text-slate-500">Loading research…</div>;
-  if (!post) return <div className="grid min-h-screen place-items-center bg-app-gradient px-5 text-center"><div><h1 className="text-2xl font-extrabold text-ink">Research not found</h1><p className="mt-2 text-sm text-slate-500">This request may have expired with a previous browser session.</p><a href="/" className="mt-5 inline-block text-sm font-bold text-brand">Return to community</a></div></div>;
+  if (!hydrated) return <div className="min-h-screen bg-app-gradient px-5 py-16" role="status" aria-label="Loading research"><div className="mx-auto max-w-6xl animate-pulse"><div className="h-12 w-36 rounded-2xl bg-white/80" /><div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_290px]"><div className="space-y-5"><div className="h-72 rounded-card border border-white bg-white/70" /><div className="h-96 rounded-card border border-white bg-white/70" /></div><div className="h-72 rounded-card border border-white bg-white/70" /></div><span className="sr-only">Loading research details</span></div></div>;
+  if (!post) return <div className="grid min-h-screen place-items-center bg-app-gradient px-5 text-center"><Card className="max-w-md p-8"><div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-slate-100 text-xl font-black text-slate-400">?</div><h1 className="mt-4 text-2xl font-extrabold text-ink">Research not found</h1><p className="mt-2 text-sm leading-6 text-slate-500">This request may have expired with a previous browser session.</p><a href="/" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-brand-gradient px-4 text-sm font-bold text-white shadow-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">Return to community</a></Card></div>;
 
   const targetAudiences = Array.isArray(post.targetAudience) ? post.targetAudience : [post.targetAudience];
 

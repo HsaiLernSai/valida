@@ -2,6 +2,47 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.4D — Final Release QA
+
+### Release validation
+
+- Reviewed the complete v0.4A–v0.4C implementation and all type-dependent builder, renderer, wizard, storage, completion, and external-form branches.
+- Added strict HTTP/HTTPS validation for external-form links because wizard navigation does not submit the native URL input directly.
+- Added visible keyboard-focus treatment to custom required toggles and rating controls.
+- Verified all 11 native question types are present across the TypeScript union, session-post runtime validator, builder, and renderer.
+- Verified product storage access remains isolated to the versioned browser-storage adapter.
+- `npm run lint` passed with no warnings and `npm run build` generated `/`, `/profile`, and `/research/[id]` on June 29, 2026.
+
+### QA limitation
+
+- Automated in-app browser navigation to the local development server was unavailable during v0.4D. Interactive wizard, submission, refresh persistence, history, response-count, and mobile sign-off must therefore be performed manually before calling the release fully browser-verified.
+
+## v0.4C — Professional UX polish
+
+- Refined wizard hierarchy, step progress, disabled guidance, responsive spacing, safe-area footer, focus trapping, Escape behavior, and trigger-focus restoration.
+- Improved builder focus flow, duplicate-option validation, empty/error guidance, and keyboard-visible custom controls.
+- Added native-survey first-error focus, stronger success/read-only states, and responsive touch targets.
+- Added research-detail and participation-history loading states, feed/profile empty states, not-found presentation, shared button states, mobile navigation safe areas, and reduced-motion handling.
+
+## v0.4A — Professional Native Survey UI
+
+- Redesigned the native survey header, question cards, numbering, required/optional labels, inputs, choices, validation summary, submit area, success state, and read-only answers.
+- Reworked the builder into structured question cards with direct type-add controls, clearer option editing, responsive spacing, and consistent v0.4 visual styling.
+- Refined Research Detail integration and metadata presentation without changing external forms or storage behavior.
+
+## v0.4B — Rich Native Question Types
+
+### Completed features
+
+- Added Rating (fixed 1–5), Dropdown, Number, Email, Phone, Date, and Time to the existing native survey contract.
+- Added creator controls and option editing for the new types without changing the question/answer storage shape.
+- Added participant rendering, required validation, email/number/rating/date/time validation, preview support, and completed read-only display.
+- Extended session-post runtime validation so newly published research using rich types survives navigation and refresh in the current tab.
+
+### Preserved behavior
+
+- Existing four question types, schema-v1 browser storage, idempotent native submission, completion/history/count synchronization, and external forms remain unchanged.
+
 ## v0.3 — Versioned client storage foundation
 
 ### Completed features

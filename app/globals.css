@@ -36,3 +36,33 @@ button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.safe-area-nav {
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-footer {
+  padding-bottom: max(0.875rem, env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -9,10 +9,10 @@ This repository is a frontend-only product prototype. It intentionally has no se
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** Product Planning Documentation v0.4
-- **Current objective:** establish a product-management layer that separates implemented MVP, next work, planned capabilities, future ideas, and current exclusions.
+- **Product iteration:** v0.4D — Final Release QA
+- **Current objective:** validate the complete v0.4 native survey release candidate before commit and push.
 
-This is a documentation-only sprint; runtime behavior remains Client Storage Foundation v0.3. The next coding sprint is **Professional Native Survey UX v0.4**.
+The code-review, static-contract, lint, and production-build gates pass. Interactive local-browser automation was unavailable during v0.4D, so final manual browser sign-off remains explicitly pending; no subsequent coding sprint is selected.
 
 ## Current architecture
 
@@ -60,8 +60,8 @@ This is a documentation-only sprint; runtime behavior remains Client Storage Fou
 - Six-step modal/overlay Create Research Wizard.
 - Goal, basic details, response method, target audiences, response settings, hashtags, preview, and publish flow.
 - External URL support for Google Forms, Microsoft Forms, Typeform, or other providers.
-- Native form builder with short answer, paragraph, multiple choice, and checkbox questions.
-- Required toggles, editable options, add/remove options, and delete-question controls.
+- Professional native form builder with short answer, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time questions.
+- Required toggles, editable/unique options, add/remove options, type switching, delete controls, focused editing flow, and publish-time validation.
 - Multi-value target audience tags with suggestions and removal.
 - Newly published posts appear at the top of the feed and are available on detail routes for the current tab session.
 
@@ -71,6 +71,7 @@ This is a documentation-only sprint; runtime behavior remains Client Storage Fou
 - Native form rendering and required-field validation.
 - Frontend-only native submission, success state, local response-count increment, and duplicate prevention.
 - Read-only submitted answers and “You already participated” state on return.
+- Professional native response layout, type-specific validation, first-error focus, success presentation, and completed read-only answers for all 11 types.
 - External form panel with a new-tab CTA and explicit unverified-submission notice.
 - Profile participation history with completion date and links back to research detail.
 
@@ -83,7 +84,7 @@ This is a documentation-only sprint; runtime behavior remains Client Storage Fou
 
 ## Features in progress
 
-No product feature is currently half-built. Product planning documentation is the only active work. The next coding sprint will improve the existing native survey builder, validation guidance, preview confidence, accessibility, and regression coverage. Search, tabs, reactions, bookmarks, and most navigation destinations remain presentational and are not part of that sprint.
+No v0.4 feature is half-built. The remaining release activity is manual browser sign-off for the wizard-to-history lifecycle and mobile layouts. Search, tabs, reactions, bookmarks, and most navigation destinations remain presentational and are outside v0.4.
 
 The status of every named capability is maintained in `FEATURE_MATRIX.md`; completed milestone history is maintained in `SPRINT_HISTORY.md`.
 
@@ -95,8 +96,7 @@ The status of every named capability is maintained in `FEATURE_MATRIX.md`; compl
 - Feed tabs, search, Interested, Comment, Share, Explore, My Research, Bookmarks, and most navigation items are visual only.
 - External-provider completion cannot be detected or verified.
 - Deadlines are displayed but are not used to close requests; limited requests are not automatically closed at their target.
-- Link, date, and numeric validation are suitable for a prototype, not production abuse or edge cases.
-- The wizard dialog does not yet provide a full focus trap and focus restoration audit.
+- Native validation and HTTP/HTTPS external-link validation are suitable for a frontend prototype, not production abuse prevention. Phone input intentionally has no region-specific validation.
 - There is no automated unit, integration, accessibility, or end-to-end test suite.
 - The synced workspace has produced duplicate files with a ` 2` suffix. TypeScript explicitly excludes `**/* 2.ts` and `**/* 2.tsx`; `.next-build` is used because the default `.next` directory was unreliable under sync. Do not treat duplicate-suffix files as canonical.
 - `components/ui/Logo.tsx` is legacy; `components/ui/ValidaLogo.tsx` is the active logo component. Confirm imports before removing legacy files.
@@ -118,7 +118,7 @@ The status of every named capability is maintained in `FEATURE_MATRIX.md`; compl
 
 - `ResearchPost`: creator display data, research content, response method, optional external link/native questions, audiences, hashtags, limits/deadlines, response count, and display-action counts.
 - `ResearchWizardData`: editable creation state; stricter UI defaults become an optional-field `ResearchPost` on publish.
-- `NativeFormQuestion`: one of four question types, label, required flag, and optional choices.
+- `NativeFormQuestion`: one of 11 question types, label, required flag, and optional choices for multiple choice, checkbox, and dropdown.
 - `NativeFormAnswers`: question-id keyed strings or string arrays.
 - `ParticipationRecord`: post ID, ISO completion time, and submitted answers.
 - `NavigationItem`, `TrendingResearchItem`, and `QuickStartItem`: presentation/catalog models.
@@ -127,6 +127,8 @@ See `DATABASE.md` for every field, status, and relationship.
 
 ## Tested features
 
+- v0.4D static QA confirmed all 11 question types across types, runtime storage validation, builder, and renderer; browser storage access remains isolated to `lib/browser-storage.ts`; external links remain detail-only.
+- v0.4D passed `npm run lint` without warnings and `npm run build` on June 29, 2026. The build generated `/`, `/profile`, and `/research/[id]` successfully.
 - Product Planning Documentation v0.4 passed `npm run lint` and `npm run build` on June 29, 2026; no application code or runtime behavior changed.
 - Client Storage Foundation v0.3 passed `npm run lint` and `npm run build` on June 29, 2026; the development server also returned HTTP 200 for `/`.
 - `npm run lint` and `npm run build` passed after the documentation sprint on June 28, 2026.
@@ -139,10 +141,16 @@ See `DATABASE.md` for every field, status, and relationship.
 
 ## Remaining testing
 
-- Re-run lint and production build after every implementation change.
+- Complete a manual browser release pass for Create Research → publish → feed → detail → submit → completed feed → Profile History.
+- Exercise all 11 question types in creation, preview, participant input, validation, and read-only display.
+- Verify refresh behavior for session-created posts and local participation, duplicate submission blocking, and feed/detail response-count parity.
+- Check mobile wizard keyboard behavior, safe areas, overflow, touch targets, date/time controls, and rating layout on iPhone/Android sizes.
+- Verify valid and invalid external HTTP/HTTPS links and confirm external forms still open from detail only.
+- The v0.4D in-app browser could not navigate to the local server; do not treat the current release as interactively browser-verified until the manual pass above is recorded.
+- Re-run lint and production build after any release-blocking fix.
 - Add automated tests for storage parsing, duplicate prevention, form validation, and post conversion.
 - Add end-to-end coverage for publish → feed → detail → submit → feed completed → profile history.
-- Exercise every native question type, option deletion edge cases, malformed/old storage, and orphaned history records.
+- Exercise option deletion/duplicate edge cases, malformed/old storage, and orphaned history records.
 - Verify real Google Forms, Microsoft Forms, Typeform, invalid URL, and blocked-popup behavior.
 - Test expired deadlines, full response targets, zero/negative targets, and timezone boundaries once closing behavior is implemented.
 - Perform keyboard, focus-trap, screen-reader, contrast, reduced-motion, and touch-target audits.

@@ -57,9 +57,9 @@ A future normalized record should use `id`, `postId`, `version`, `status`, `crea
 | `type` | `NativeFormQuestionType` | Renderer/builder control type. |
 | `label` | `string` | Prompt shown to participants. |
 | `required` | `boolean` | Blocks submit when no valid value is supplied. |
-| `options` | `string[]?` | Choices for multiple-choice and checkbox questions. |
+| `options` | `string[]?` | Choices for multiple-choice, checkbox, and dropdown questions. |
 
-Question types are `short_text` (single-line string), `paragraph` (multiline string), `multiple_choice` (one string), and `checkbox` (string array).
+Question types are `short_text` (single-line string), `paragraph` (multiline string), `multiple_choice` (one string), `checkbox` (string array), `rating` (a string from `1`–`5`), `dropdown` (one option string), `number` (numeric input stored as a string), `email`, `phone`, `date`, and `time` (all stored as strings). This preserves the existing `NativeFormAnswers` contract.
 
 ### Response / NativeFormAnswers
 

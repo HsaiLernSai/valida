@@ -10,7 +10,19 @@ const researchGoals = new Set([
   "Open Discussion",
 ]);
 
-const questionTypes = new Set(["short_text", "paragraph", "multiple_choice", "checkbox"]);
+const questionTypes = new Set([
+  "short_text",
+  "paragraph",
+  "multiple_choice",
+  "checkbox",
+  "rating",
+  "dropdown",
+  "number",
+  "email",
+  "phone",
+  "date",
+  "time",
+]);
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");

@@ -32,8 +32,7 @@ This roadmap separates shipped prototype capability from the next coding sprint 
 
 ### Planned
 
-- **Next coding sprint: Professional Native Survey UX v0.4.** Improve builder hierarchy, question editing clarity, type selection, option management, validation guidance, preview confidence, responsive behavior, and keyboard/accessibility fundamentals.
-- Focused automated tests for storage, form validation, publish, submit, completion, history, and external handoff.
+- Complete manual v0.4 browser release sign-off, then add focused automated tests for storage, form validation, publish, submit, completion, history, and external handoff.
 
 ### Future
 
@@ -149,4 +148,4 @@ This roadmap separates shipped prototype capability from the next coding sprint 
 
 ## Sequencing rule
 
-Do not pull a feature forward merely because a visible control already exists. Each coding sprint must name one product outcome, list explicit exclusions, preserve the external-form path, and pass lint/build. The next coding sprint remains **Professional Native Survey UX v0.4** until it is completed or deliberately reprioritized in the product docs.
+Do not pull a feature forward merely because a visible control already exists. Each coding sprint must name one product outcome, list explicit exclusions, preserve the external-form path, and pass lint/build. No new coding sprint is selected until v0.4 manual browser sign-off is recorded.

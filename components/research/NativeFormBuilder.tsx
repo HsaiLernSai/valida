@@ -8,16 +8,25 @@ const questionTypes: { value: NativeFormQuestionType; label: string; description
   { value: "paragraph", label: "Paragraph", description: "A detailed written response", symbol: "¶" },
   { value: "multiple_choice", label: "Multiple choice", description: "Select one option", symbol: "◉" },
   { value: "checkbox", label: "Checkboxes", description: "Select multiple options", symbol: "☑" },
+  { value: "rating", label: "Rating", description: "Rate from 1 to 5", symbol: "★" },
+  { value: "dropdown", label: "Dropdown", description: "Choose from a compact list", symbol: "⌄" },
+  { value: "number", label: "Number", description: "Enter a numeric value", symbol: "123" },
+  { value: "email", label: "Email", description: "Enter an email address", symbol: "@" },
+  { value: "phone", label: "Phone", description: "Enter a phone number", symbol: "☎" },
+  { value: "date", label: "Date", description: "Choose a calendar date", symbol: "17" },
+  { value: "time", label: "Time", description: "Choose a time", symbol: "◷" },
 ];
 
 const questionTypeLabels = Object.fromEntries(questionTypes.map((type) => [type.value, type.label])) as Record<NativeFormQuestionType, string>;
+
+const usesOptions = (type: NativeFormQuestionType) => type === "multiple_choice" || type === "checkbox" || type === "dropdown";
 
 const createQuestion = (type: NativeFormQuestionType): NativeFormQuestion => ({
   id: globalThis.crypto?.randomUUID?.() ?? `question-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   type,
   label: "",
   required: false,
-  options: type === "multiple_choice" || type === "checkbox" ? ["Option 1", "Option 2"] : undefined,
+  options: usesOptions(type) ? ["Option 1", "Option 2"] : undefined,
 });
 
 const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand/60 focus:ring-4 focus:ring-brand/10";
@@ -26,9 +35,18 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
   const updateQuestion = (id: string, updates: Partial<NativeFormQuestion>) => onChange(questions.map((question) => question.id === id ? { ...question, ...updates } : question));
   const changeType = (question: NativeFormQuestion, type: NativeFormQuestionType) => updateQuestion(question.id, {
     type,
-    options: type === "multiple_choice" || type === "checkbox" ? question.options ?? ["Option 1", "Option 2"] : undefined,
+    options: usesOptions(type) ? question.options ?? ["Option 1", "Option 2"] : undefined,
   });
-  const addQuestion = (type: NativeFormQuestionType) => onChange([...questions, createQuestion(type)]);
+  const addQuestion = (type: NativeFormQuestionType) => {
+    const question = createQuestion(type);
+    onChange([...questions, question]);
+    requestAnimationFrame(() => document.getElementById(`${question.id}-prompt`)?.focus());
+  };
+  const addOption = (question: NativeFormQuestion) => {
+    const optionIndex = question.options?.length ?? 0;
+    updateQuestion(question.id, { options: [...(question.options ?? []), `Option ${optionIndex + 1}`] });
+    requestAnimationFrame(() => document.getElementById(`${question.id}-option-${optionIndex}`)?.focus());
+  };
 
   return (
     <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/80 shadow-[0_12px_34px_rgba(50,65,110,0.05)]">
@@ -49,8 +67,10 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
       <div className="space-y-3.5 p-3 sm:p-4">
         {questions.map((question, questionIndex) => {
           const needsPrompt = !question.label.trim();
-          const choiceQuestion = question.type === "multiple_choice" || question.type === "checkbox";
-          const hasInvalidOption = choiceQuestion && (question.options?.some((option) => !option.trim()) ?? true);
+          const optionQuestion = usesOptions(question.type);
+          const normalizedOptions = (question.options ?? []).map((option) => option.trim().toLocaleLowerCase());
+          const hasDuplicateOption = new Set(normalizedOptions.filter(Boolean)).size !== normalizedOptions.filter(Boolean).length;
+          const hasInvalidOption = optionQuestion && ((question.options?.length ?? 0) < 2 || (question.options?.some((option) => !option.trim()) ?? true) || hasDuplicateOption);
 
           return (
             <section key={question.id} aria-labelledby={`${question.id}-heading`} className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition ${needsPrompt || hasInvalidOption ? "border-amber-200" : "border-slate-200"}`}>
@@ -73,12 +93,12 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
                     </select>
                   </label>
                   <label className="block text-[11px] font-bold text-slate-600">Question prompt
-                    <input aria-label={`Question ${questionIndex + 1} text`} value={question.label} onChange={(event) => updateQuestion(question.id, { label: event.target.value })} placeholder="What would you like to ask?" aria-invalid={needsPrompt} className={`${fieldClass} mt-1.5 min-h-11 ${needsPrompt ? "border-amber-300 focus:border-amber-400 focus:ring-amber-100" : ""}`} />
+                    <input id={`${question.id}-prompt`} aria-label={`Question ${questionIndex + 1} text`} value={question.label} onChange={(event) => updateQuestion(question.id, { label: event.target.value })} placeholder="What would you like to ask?" aria-invalid={needsPrompt} className={`${fieldClass} mt-1.5 min-h-11 ${needsPrompt ? "border-amber-300 focus:border-amber-400 focus:ring-amber-100" : ""}`} />
                     {needsPrompt && <span className="mt-1.5 block text-[10px] font-bold text-amber-700">Add a question before continuing.</span>}
                   </label>
                 </div>
 
-                {choiceQuestion && (
+                {optionQuestion && (
                   <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-3 sm:p-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <div><p className="text-[11px] font-extrabold text-slate-700">Answer options</p><p className="mt-0.5 text-[10px] text-slate-400">Participants will see these in this order.</p></div>
@@ -89,15 +109,15 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
                         const optionInvalid = !option.trim();
                         return (
                           <div key={`${question.id}-${optionIndex}`} className="flex items-center gap-2">
-                            <span className={`grid h-8 w-8 shrink-0 place-items-center border bg-white text-[10px] font-bold text-slate-400 ${question.type === "multiple_choice" ? "rounded-full" : "rounded-lg"}`}>{optionIndex + 1}</span>
-                            <input aria-label={`Question ${questionIndex + 1} option ${optionIndex + 1}`} value={option} onChange={(event) => updateQuestion(question.id, { options: (question.options ?? []).map((item, index) => index === optionIndex ? event.target.value : item) })} placeholder={`Option ${optionIndex + 1}`} aria-invalid={optionInvalid} className={`min-h-10 min-w-0 flex-1 rounded-lg border bg-white px-3 text-xs text-ink outline-none transition focus:ring-4 ${optionInvalid ? "border-amber-300 focus:border-amber-400 focus:ring-amber-100" : "border-slate-200 focus:border-brand/50 focus:ring-brand/10"}`} />
+                            <span className={`grid h-8 w-8 shrink-0 place-items-center border bg-white text-[10px] font-bold text-slate-400 ${question.type === "multiple_choice" ? "rounded-full" : "rounded-lg"}`}>{question.type === "dropdown" ? "⌄" : optionIndex + 1}</span>
+                            <input id={`${question.id}-option-${optionIndex}`} aria-label={`Question ${questionIndex + 1} option ${optionIndex + 1}`} value={option} onChange={(event) => updateQuestion(question.id, { options: (question.options ?? []).map((item, index) => index === optionIndex ? event.target.value : item) })} placeholder={`Option ${optionIndex + 1}`} aria-invalid={optionInvalid || hasDuplicateOption} className={`min-h-10 min-w-0 flex-1 rounded-lg border bg-white px-3 text-xs text-ink outline-none transition focus:ring-4 ${optionInvalid || hasDuplicateOption ? "border-amber-300 focus:border-amber-400 focus:ring-amber-100" : "border-slate-200 focus:border-brand/50 focus:ring-brand/10"}`} />
                             <button type="button" aria-label={`Remove option ${optionIndex + 1}`} disabled={(question.options?.length ?? 0) <= 2} onClick={() => updateQuestion(question.id, { options: question.options?.filter((_, index) => index !== optionIndex) })} className="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-lg text-slate-400 transition hover:bg-rose-50 hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-25">×</button>
                           </div>
                         );
                       })}
                     </div>
-                    {hasInvalidOption && <p className="mt-2 text-[10px] font-bold text-amber-700">Every option needs a label.</p>}
-                    <button type="button" onClick={() => updateQuestion(question.id, { options: [...(question.options ?? []), `Option ${(question.options?.length ?? 0) + 1}`] })} className="mt-3 min-h-10 rounded-lg border border-dashed border-brand/30 bg-white px-3 text-[11px] font-extrabold text-brand transition hover:border-brand/50 hover:bg-brand-soft focus:outline-none focus:ring-4 focus:ring-brand/10">+ Add option</button>
+                    {hasInvalidOption && <p className="mt-2 text-[10px] font-bold text-amber-700">{hasDuplicateOption ? "Use a unique label for every option." : "Add at least two options and give each one a label."}</p>}
+                    <button type="button" onClick={() => addOption(question)} className="mt-3 min-h-10 rounded-lg border border-dashed border-brand/30 bg-white px-3 text-[11px] font-extrabold text-brand transition hover:border-brand/50 hover:bg-brand-soft focus:outline-none focus:ring-4 focus:ring-brand/10">+ Add option</button>
                   </div>
                 )}
 
@@ -105,7 +125,7 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
                   <p className="text-[10px] leading-4 text-slate-400">Required questions must be answered before submission.</p>
                   <label className="flex min-h-10 cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-3 text-[11px] font-extrabold text-slate-600 transition hover:border-brand/25">
                     <input type="checkbox" checked={question.required} onChange={(event) => updateQuestion(question.id, { required: event.target.checked })} className="peer sr-only" />
-                    <span aria-hidden="true" className="relative h-5 w-9 rounded-full bg-slate-200 transition peer-checked:bg-brand after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow-sm after:transition peer-checked:after:translate-x-4" />
+                    <span aria-hidden="true" className="relative h-5 w-9 rounded-full bg-slate-200 transition peer-checked:bg-brand peer-focus-visible:ring-4 peer-focus-visible:ring-brand/15 after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow-sm after:transition peer-checked:after:translate-x-4" />
                     Required
                   </label>
                 </div>
@@ -124,7 +144,7 @@ export function NativeFormBuilder({ questions, onChange }: { questions: NativeFo
       </div>
 
       <div className="border-t border-slate-200 bg-white px-3.5 py-4 sm:px-5">
-        <div className="flex items-center justify-between gap-3"><div><p className="text-xs font-extrabold text-ink">Add a question</p><p className="mt-0.5 text-[10px] text-slate-400">Choose the answer format participants will use.</p></div><span className="hidden text-[10px] font-bold text-slate-400 sm:inline">4 available types</span></div>
+        <div className="flex items-center justify-between gap-3"><div><p className="text-xs font-extrabold text-ink">Add a question</p><p className="mt-0.5 text-[10px] text-slate-400">Choose the answer format participants will use.</p></div><span className="hidden text-[10px] font-bold text-slate-400 sm:inline">{questionTypes.length} available types</span></div>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {questionTypes.map((type) => (
             <Button key={type.value} type="button" variant="secondary" onClick={() => addQuestion(type.value)} className="min-h-14 justify-start gap-3 rounded-xl px-3 py-2.5 text-left">

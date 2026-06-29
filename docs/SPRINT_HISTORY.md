@@ -52,12 +52,32 @@ This ledger records product milestones in implementation order. Labels are inter
 
 **Runtime impact:** none. This is a documentation-only sprint.
 
-**Next coding sprint:** **Professional Native Survey UX v0.4**.
+## v0.4A — Professional Native Survey UI
 
-## Next — Professional Native Survey UX v0.4
+**Objective:** make the native survey creator and participant surfaces professional and demo-ready.
 
-**Objective:** make the existing native survey builder, question editing, validation guidance, and preview feel professional without expanding infrastructure or mixing in unrelated roadmap features.
+**Delivered:** structured builder cards and direct type controls; professional survey header/question cards; numbering; required/optional labels; improved fields, validation, submit, success, read-only answers, detail integration, and metadata presentation.
 
-**Must preserve:** external forms, four current question types, current routes, shared components, schema-v1 browser storage, current feed/detail/profile behavior, frontend-only scope, and responsive design.
+## v0.4B — Rich Native Question Types
 
-**Explicit exclusions:** uploads, annotations, translation, AI, analytics, credits, notifications, backend, authentication, database, cloud storage, and payments.
+**Objective:** expand the native survey using the existing answer/storage contract.
+
+**Delivered:** Rating, Dropdown, Number, Email, Phone, Date, and Time in addition to the original four types; type-specific builder/renderer controls; publish and response validation; runtime session-post recognition; preview and read-only support.
+
+**Preserved:** schema-v1 storage, string/string-array answers, duplicate protection, history, count sync, and external forms.
+
+## v0.4C — Professional UX polish
+
+**Objective:** refine global release UX without expanding product scope.
+
+**Delivered:** wizard progress/guidance/focus containment; builder duplicate-option and editing polish; first-error focus; loading/empty/error states; safe areas; touch/focus/disabled consistency; reduced-motion support; mobile refinements.
+
+## v0.4D — Final Release QA
+
+**Objective:** validate v0.4 before commit and push and fix release blockers only.
+
+**Delivered:** full code-path review; 11-type static contract check; storage/external-form boundary review; strict external HTTP/HTTPS link validation; keyboard focus visibility fixes; clean lint and production build on June 29, 2026.
+
+**QA status:** code/static/build gate passed. Interactive local browser automation was unavailable, so manual browser sign-off for wizard creation, all types, validation, submit, completed/history/count/persistence, and mobile remains required before the release is called fully verified.
+
+**Next sprint:** not selected. Do not begin feature work until v0.4 manual release sign-off is recorded.

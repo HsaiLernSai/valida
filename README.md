@@ -37,7 +37,7 @@ Mock research is the base catalog. Newly created requests are stored in versione
 - Deadline-based or open-ended requests.
 - Multiple target-audience tags and hashtags.
 - Six-step Create Research Wizard with preview and session publishing.
-- Native form builder with short answer, paragraph, multiple-choice, and checkbox questions.
+- Native form builder with short answer, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time questions.
 - Required-field validation, browser-local submission, duplicate protection, and read-only completed responses.
 - External form support for Google Forms, Microsoft Forms, Typeform, and other URLs.
 - Dedicated research detail pages and local participation history.
@@ -96,17 +96,17 @@ See [Project Status](docs/PROJECT_STATUS.md) for the complete issue and testing 
 ## Current sprint status
 
 - **Package version:** `0.1.0`
-- **Product iteration:** Product Planning Documentation v0.4
-- **Runtime state:** Client Storage Foundation v0.3 remains the implemented frontend prototype.
-- **Objective:** start **Professional Native Survey UX v0.4** as the next coding sprint without mixing in unrelated planned or future features.
+- **Product iteration:** v0.4D Final Release QA
+- **Runtime state:** v0.4A–v0.4C is code-complete; static, lint, and production-build gates pass.
+- **Objective:** complete manual browser sign-off before commit/push. No next feature sprint is selected.
 
 There is no partially implemented product feature in the current workspace. The latest documented lint and production-build checks pass.
 
-## Next priorities
+## Release priorities
 
-1. **Professional question editor foundation.** Improve native question hierarchy, type selection, required state, option editing, and empty/incomplete guidance while preserving the current data contract.
-2. **Validation and preview confidence.** Prevent invalid blank questions/choice sets and make Step 6 accurately match Research Detail.
-3. **Accessibility and regression coverage.** Improve wizard keyboard/focus behavior and protect survey/storage/external-form flows with focused tests.
+1. Manually verify Create Research with all 11 native question types, validation, preview, and publish.
+2. Verify submit, duplicate protection, completed/read-only state, history, response-count sync, and refresh persistence.
+3. Verify mobile layout/keyboard/safe areas and valid/invalid external links, then record release sign-off.
 
 Acceptance criteria, dependencies, and exact files are documented in [Next Tasks](docs/NEXT_TASK.md).
 
@@ -114,7 +114,7 @@ Acceptance criteria, dependencies, and exact files are documented in [Next Tasks
 
 - [Handoff](docs/HANDOFF.md) — fastest starting point for a new development session.
 - [Feature Matrix](docs/FEATURE_MATRIX.md) — authoritative Done, Current MVP, Next, Planned, Future, and Out-of-scope boundaries.
-- [Sprint History](docs/SPRINT_HISTORY.md) — completed documentation/implementation milestones and the next coding sprint.
+- [Sprint History](docs/SPRINT_HISTORY.md) — completed milestones and current release-QA boundary.
 - [Project Status](docs/PROJECT_STATUS.md) — implementation, completed work, issues, and testing.
 - [Product Blueprint](docs/PRODUCT_BLUEPRINT.md) — vision, users, journey, and product direction.
 - [Roadmap](docs/ROADMAP.md) — phased long-term plan.

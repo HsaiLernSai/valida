@@ -72,7 +72,7 @@ Community Feed, compact research cards, Research Detail, goal/effort/audience/ca
 
 ### Layer 2 — Create a research request
 
-The six-step Create Research Wizard supports six goals, external or native collection, multiple audiences, response limits, timing, hashtags, preview, and session publishing. The next coding sprint improves the native survey creation experience; it does not add infrastructure.
+The six-step Create Research Wizard supports six goals, external or native collection, multiple audiences, response limits, timing, hashtags, preview, and session publishing. v0.4 adds the professional builder/renderer and 11 native question types without adding infrastructure.
 
 ### Layer 3 — Participate and retain local history
 
@@ -106,13 +106,11 @@ Credits, organizations, AI assistance, multilingual translation, media/file uplo
 
 The authoritative implementation status is maintained in `FEATURE_MATRIX.md`; uncommitted concepts belong in `IDEA_BACKLOG.md`.
 
-## Next product sprint
+## Current release boundary
 
-The next coding sprint is **Professional Native Survey UX v0.4**.
+v0.4A–v0.4C deliver the professional native survey UI, 11 question types, validation, accessibility, responsive polish, and state presentation while preserving existing form data and response behavior. v0.4D passes static/lint/build validation but awaits manual browser sign-off.
 
-Its goal is to improve the existing native survey builder and preview so creating a clear survey feels deliberate and professional. It should refine question-card hierarchy, type selection, required-state clarity, option editing, validation guidance, builder navigation, empty states, and responsive/keyboard usability while preserving existing form data and response behavior.
-
-The sprint must not absorb unrelated features. It excludes uploads, annotations, translation, AI, sharing, profiles/bookmarks, analytics, credits, notifications, backend, authentication, database, cloud storage, and payment work.
+No next product sprint is selected. Uploads, annotations, translation, AI, sharing, profiles/bookmarks, analytics, credits, notifications, backend, authentication, database, cloud storage, and payment work remain outside the current release.
 
 ## Product philosophy
 

@@ -23,7 +23,18 @@ export type ResearchGoal =
   | "Design Feedback"
   | "Open Discussion";
 
-export type NativeFormQuestionType = "short_text" | "paragraph" | "multiple_choice" | "checkbox";
+export type NativeFormQuestionType =
+  | "short_text"
+  | "paragraph"
+  | "multiple_choice"
+  | "checkbox"
+  | "rating"
+  | "dropdown"
+  | "number"
+  | "email"
+  | "phone"
+  | "date"
+  | "time";
 
 export interface NativeFormQuestion {
   id: string;
