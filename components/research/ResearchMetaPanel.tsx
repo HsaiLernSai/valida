@@ -8,7 +8,7 @@ export function ResearchMetaPanel({ post, responseCount }: { post: ResearchPost;
   const deadline = post.deadline ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${post.deadline}T00:00:00Z`)) : null;
 
   return (
-    <Card as="aside" className="overflow-hidden p-0">
+    <Card as="aside" className="overflow-hidden p-0 lg:sticky lg:top-24">
       <div className="border-b border-slate-100 bg-gradient-to-br from-white to-blue-50/70 px-4 py-4">
         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">At a glance</p>
         <h2 className="mt-1 text-sm font-extrabold text-ink">Research details</h2>

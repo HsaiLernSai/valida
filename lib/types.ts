@@ -50,7 +50,30 @@ export interface ParticipationRecord {
   postId: string;
   completedAt: string;
   answers: NativeFormAnswers;
+  postSnapshot?: {
+    title: string;
+    author: string;
+    goal: ResearchGoal;
+  };
 }
+
+export interface CommunityEngagement {
+  postId: string;
+  interested: boolean;
+  commentCount: number;
+  shareCount: number;
+  comments: CommunityComment[];
+}
+
+export interface CommunityComment {
+  id: string;
+  author: string;
+  initials: string;
+  message: string;
+  createdAt: string;
+}
+
+export type FeedView = "For You" | "Following Hashtags" | "Latest";
 
 export interface ResearchWizardData {
   goal: ResearchGoal | null;
@@ -111,6 +134,7 @@ export interface ResearchPost {
 export interface TrendingResearchItem {
   title: string;
   postCount: number;
+  query: string;
 }
 
 export interface QuickStartItem {

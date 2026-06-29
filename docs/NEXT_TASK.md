@@ -1,5 +1,15 @@
 # Next Tasks
 
+## Current release boundary — v0.5A stabilization
+
+The approved v0.5A implementation is code-complete. Before selecting v0.5B or v0.6, manually verify iPhone, iPad, and desktop navigation/interactions and provide the deployed Vercel production URL so public anonymous access can be checked. Do not add a testing framework or dependencies without separate approval.
+
+The older v0.4 plan below is retained as historical context; its implementation is complete.
+
+## v0.5B verification boundary
+
+Static research sharing is code-complete. Manually verify copy, native share, PNG download, QR scanning, focus containment, and responsive layout on phone/tablet/desktop. Do not extend public sharing to session-created research without a separately approved backend-persistence sprint.
+
 ## Next coding sprint — Professional Native Survey UX v0.4
 
 **Outcome:** make the existing native survey builder and preview feel clear, efficient, trustworthy, responsive, and keyboard-usable without changing infrastructure or mixing in unrelated roadmap features.

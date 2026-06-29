@@ -4,8 +4,8 @@ Everything here is unimplemented unless explicitly moved to `ROADMAP.md` as comp
 
 ## Discovery and sharing
 
-- QR code sharing and printable recruitment cards.
-- Public research share links and rich social/Open Graph previews.
+- QR customization and printable recruitment cards.
+- Server-backed public links for newly created research after authentication and persistence are approved.
 - Functional feed search, sorting, following, hashtag filters, and recommendations.
 - Research collections, saved searches, topic subscriptions, and curated lists.
 - Research templates by goal, industry, and method.

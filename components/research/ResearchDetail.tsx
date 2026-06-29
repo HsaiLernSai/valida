@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { ExternalFormPanel } from "@/components/research/ExternalFormPanel";
 import { NativeFormRenderer } from "@/components/research/NativeFormRenderer";
 import { ResearchMetaPanel } from "@/components/research/ResearchMetaPanel";
+import { ShareResearchDialog } from "@/components/research/ShareResearchDialog";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { ValidaLogo } from "@/components/ui/ValidaLogo";
 import { posts as mockPosts } from "@/lib/mock-data";
 import { getLocalResponseCount, getParticipation, getParticipationHistory, saveParticipation } from "@/lib/participation-storage";
 import { findAvailableResearchPost } from "@/lib/research-storage";
+import { discoveryUrl } from "@/lib/discovery";
 import type { NativeFormAnswers, ParticipationRecord, ResearchPost } from "@/lib/types";
 
 export function ResearchDetail({ researchId }: { researchId: string }) {
@@ -16,6 +19,8 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
   const [hydrated, setHydrated] = useState(false);
   const [participation, setParticipation] = useState<ParticipationRecord | null>(null);
   const [responseCount, setResponseCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   useEffect(() => {
     const resolvedPost = findAvailableResearchPost(researchId, mockPosts) ?? null;
@@ -24,6 +29,7 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
       const history = getParticipationHistory();
       const existingParticipation = getParticipation(researchId, history) ?? null;
       setParticipation(existingParticipation);
+      setStarted(Boolean(existingParticipation));
       setResponseCount(getLocalResponseCount(resolvedPost, history));
     }
     setHydrated(true);
@@ -31,7 +37,7 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
 
   const submitResponse = (answers: NativeFormAnswers) => {
     if (!post || participation) return;
-    const record = saveParticipation(post.id, answers);
+    const record = saveParticipation(post.id, answers, post);
     setParticipation(record);
     setResponseCount(getLocalResponseCount(post));
   };
@@ -43,26 +49,36 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
 
   return (
     <div className="min-h-screen bg-app-gradient">
-      <header className="border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8"><ValidaLogo variant="compact" /><a href="/" className="text-xs font-bold text-slate-500 transition hover:text-brand">← Back to community</a></div>
+      <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:px-8"><ValidaLogo variant="compact" /><div className="flex items-center gap-2"><Button type="button" variant="secondary" onClick={() => setShareDialogOpen(true)} className="min-h-10 rounded-xl px-3 text-xs">Share</Button><a href="/" className="inline-flex min-h-10 items-center rounded-xl px-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-brand">Community</a></div></div>
       </header>
       <main className="mx-auto max-w-6xl px-5 py-7 sm:px-8 sm:py-10">
         <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_290px]">
           <div className="space-y-5">
-            <Card as="article" className="p-5 sm:p-7">
-              <div className="flex items-center gap-3"><div className={`grid h-10 w-10 place-items-center rounded-full text-xs font-extrabold ${post.avatarStyle}`}>{post.initials}</div><div><p className="text-sm font-bold text-ink">{post.author}</p><p className="text-xs text-slate-500">{post.role} · {post.time}</p></div></div>
+            <Card as="article" className="overflow-hidden p-0">
+              <div className="border-b border-slate-100 bg-gradient-to-br from-white via-white to-blue-50/60 p-5 sm:p-7">
+              <div className="flex items-center gap-3"><div className={`grid h-11 w-11 place-items-center rounded-full text-xs font-extrabold ring-4 ring-white ${post.avatarStyle}`}>{post.initials}</div><div><p className="text-sm font-bold text-ink">{post.author}</p><p className="text-xs text-slate-500">{post.role} · Published {post.time}</p></div></div>
+              <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[0.14em] text-brand">Research summary</p>
               <h1 className="mt-5 text-2xl font-black tracking-[-0.035em] text-ink sm:text-4xl">{post.title}</h1>
               <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">{post.description}</p>
+              </div>
+              <div className="p-5 sm:p-7">
               <div className="mt-5"><p className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Target audience</p><div className="mt-2 flex flex-wrap gap-2">{targetAudiences.map((audience) => <span key={audience} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600">{audience}</span>)}</div></div>
-              <div className="mt-4 flex flex-wrap gap-2">{post.hashtags.map((tag) => <span key={tag} className="text-xs font-bold text-brand">#{tag}</span>)}</div>
+              <div className="mt-4 flex flex-wrap gap-2">{post.hashtags.map((tag) => <a href={discoveryUrl({ hashtag: tag })} key={tag} className="rounded-lg px-1.5 py-1 text-xs font-bold text-brand transition hover:bg-brand-soft hover:text-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">#{tag}</a>)}</div>
+              </div>
             </Card>
-            {post.responseMethod === "native" ? (
-              <NativeFormRenderer post={post} embedded submitted={Boolean(participation)} initialAnswers={participation?.answers} onSubmit={submitResponse} />
-            ) : <ExternalFormPanel externalLink={post.externalLink} />}
+            {!started && (
+              <div id="response-section"><Card as="section" className="p-5 sm:p-6">
+                <div className="grid grid-cols-3 gap-2" aria-label="Participation steps"><div className="rounded-xl bg-brand-soft px-2 py-2 text-center text-[10px] font-extrabold text-brand-dark">1 · Review</div><div className="rounded-xl bg-brand-soft px-2 py-2 text-center text-[10px] font-extrabold text-brand-dark">2 · Start</div><div className="rounded-xl bg-slate-100 px-2 py-2 text-center text-[10px] font-extrabold text-slate-400">3 · Submit</div></div>
+                <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Ready to participate?</p><h2 className="mt-1 text-lg font-black text-ink">Start this research</h2><p className="mt-1 text-sm leading-6 text-slate-500">Allow about {post.estimatedTime}. {post.responseMethod === "native" ? "Your response is saved in this browser after submission." : "You will continue to an external form in a new tab."}</p></div><Button onClick={() => setStarted(true)} className="min-h-12 shrink-0 rounded-xl px-5 text-sm">Start Research</Button></div>
+              </Card></div>
+            )}
+            {started && <div id="response-section">{post.responseMethod === "native" ? <NativeFormRenderer post={post} embedded submitted={Boolean(participation)} initialAnswers={participation?.answers} onSubmit={submitResponse} /> : <ExternalFormPanel externalLink={post.externalLink} />}</div>}
           </div>
           <ResearchMetaPanel post={post} responseCount={responseCount} />
         </div>
       </main>
+      {shareDialogOpen && <ShareResearchDialog post={post} onClose={() => setShareDialogOpen(false)} />}
     </div>
   );
 }

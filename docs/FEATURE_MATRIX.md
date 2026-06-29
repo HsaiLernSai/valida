@@ -17,19 +17,19 @@ Status is singular per row. The implementation-truth column records visible shel
 
 | Feature | Status | Current implementation truth | Intended boundary / next condition |
 | --- | --- | --- | --- |
-| Community Feed | **Done** | Responsive mock feed, compact cards, completion state, local adjusted counts, sidebars, and mobile navigation work. | Search, sorting, reactions, and live community data are separate features. |
+| Community Feed | **Done** | Responsive mock feed, functional view tabs, local engagement state, completion state, adjusted counts, sidebars, and mobile navigation work. | Search and live community data remain separate features. |
 | Create Research | **Done** | Six-step frontend wizard publishes to the current tab session. | No drafts, server persistence, ownership, or collaboration. |
-| Research Detail | **Done** | `/research/[id]` resolves mock/session research and renders native or external response flow. | No public server-backed permalink guarantee. |
+| Research Detail | **Done** | `/research/[id]` resolves mock/session research, renders native/external response flow, and exposes sharing. Static catalog routes are directly public. | Session-created research has no public server-backed permalink guarantee. |
 | Native Survey Builder | **Current MVP** | Professional builder supports short answer, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time; required state, option editing, delete, and preview work. | Advanced logic, uploads, and additional field types remain future work. |
 | Native Survey Response | **Current MVP** | All eleven native types render with required/type validation, local submit, idempotency by post ID, read-only revisit, and completed state. | Needs automated browser coverage; responses remain browser-local. |
 | External Forms | **Done** | Google Forms, Microsoft Forms, Typeform, and other URLs open from Research Detail only with an unverified warning. | Provider verification/integration is future work. |
-| Profile | **Current MVP** | `/profile` exists as a browser-local Participated surface. | No editable/public identity, settings, ownership, or account. |
-| Participation History | **Done** | Lists local native completions, dates, detail links, and graceful missing-session-post fallback. | Not cross-device or account-backed. |
+| Profile | **Current MVP** | `/profile` uses focused Overview, My Research, Participation, Bookmarks, and Credits tabs with browser-local activity statistics and truthful inactive-feature states. | No editable/public identity, settings, authoritative ownership, credits system, or account. |
+| Participation History | **Done** | Lists local completions, dates, detail links, and stored post context for new records when session research expires. | Legacy records without a snapshot use an explicit expired-session fallback; history is not cross-device. |
 | Bookmarks | **Planned** | Navigation affordance only; no route, model, or persistence. | Build after survey UX/testing using the versioned storage adapter. |
 | Search | **Planned** | Compact search input is visual only. | Add deterministic frontend filtering before any server search. |
-| Feed tabs | **Planned** | For You, Following Hashtags, and Latest are visual only. | Define Latest ordering and Following semantics before implementation. |
-| QR sharing | **Planned** | Not implemented. | Depends on a share-link policy and durable URLs. |
-| Share links | **Planned** | Share action is visual; internal detail route shape exists. | Add clipboard/Web Share and social metadata after permalink behavior is defined. |
+| Feed tabs | **Done** | For You preserves community order, Following Hashtags filters to the prototype followed-tag set, and Latest prioritizes current-session publications. | User-managed followed hashtags require a later profile/settings decision. |
+| QR sharing | **Current MVP** | Static public research has dependency-free QR generation and PNG download in the Share dialog. | Browser-local research is excluded until server persistence exists; customization is not implemented. |
+| Share links | **Current MVP** | Static public research has a responsive dialog, link copy feedback, native device share where supported, QR, and social metadata. | Session-created research truthfully reports that public sharing is unavailable. |
 | Auto translation | **Future** | Not implemented. | Detect source language and cache translations only after data/storage architecture is approved. |
 | Multi-language: English, Thai, Myanmar, Chinese | **Future** | UI and content are English-only. | Requires localization architecture, translation policy, font/layout QA, and language metadata. |
 | Image upload | **Future** | Not implemented; no upload UI or storage. | Requires approved cloud storage, file policy, limits, moderation, and privacy design. |

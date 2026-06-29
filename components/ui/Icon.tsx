@@ -17,9 +17,9 @@ const iconPaths: Record<IconName, ReactNode> = {
   arrow: <><path d="M5 12h14M14 7l5 5-5 5" /></>,
 };
 
-export function Icon({ name, className = "h-5 w-5" }: { name: IconName; className?: string }) {
+export function Icon({ name, className = "h-5 w-5", filled = false }: { name: IconName; className?: string; filled?: boolean }) {
   return (
-    <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {iconPaths[name]}
     </svg>
   );

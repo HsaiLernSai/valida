@@ -2,6 +2,27 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.5B — Static research sharing
+
+- Replaced the inline share controls with an accessible, responsive Share Research dialog used by feed cards and Research Detail.
+- Added public-link copy with success/error feedback and native device sharing where supported.
+- Added dependency-free QR generation for the five static public research routes and downloadable PNG QR images.
+- Kept browser-local session research truthful: its share dialog explains that public links and QR require future server persistence.
+- Preserved direct `/research/[id]` access and polished the public detail header/share entry point.
+- `npm run lint` and `npm run build` pass with no package changes. Interactive device-browser sign-off remains pending because local browser navigation did not respond.
+
+## v0.5A — MVP stabilization
+
+- Made Profile available from the shared iPhone/iPad bottom navigation and added working Home, My Research, and Bookmarks destinations.
+- Made For You, Following Hashtags, and Latest selectable feed views with truthful filtering/order behavior.
+- Completed browser-local community interactions: toggleable animated Interested state, recent and user-posted comments with timestamps/confirmation, copy-link feedback, and native device sharing where supported.
+- Added a clear Feed → Research Detail → Start Research → Submit flow; Participate and every Open Research action route to Research Detail.
+- Redesigned `/profile` into Overview, My Research, Participation, Bookmarks, and Credits tabs with profile context and basic activity statistics.
+- Preserved research title/author/goal snapshots on new participation records so expired session research remains identifiable in History.
+- Added framework-native metadata, per-research metadata, `robots.txt`, and `sitemap.xml` without dependencies.
+- `npm run lint` and `npm run build` passed on June 29, 2026. Interactive browser automation remained unavailable; iPhone/iPad/desktop interaction sign-off is still pending.
+- No authentication, translation, backend, testing framework, or new dependency was added.
+
 ## v0.4D — Final Release QA
 
 ### Release validation

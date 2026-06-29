@@ -1,16 +1,36 @@
 import type {
+  CommunityComment,
   NavigationItem,
   QuickStartItem,
   ResearchPost,
   TrendingResearchItem,
 } from "@/lib/types";
 
+export const commentsByPostId: Record<string, CommunityComment[]> = {
+  "remote-team-planning": [
+    { id: "remote-comment-1", author: "Maya Patel", initials: "MP", message: "We plan asynchronously on Friday so Monday can start with decisions, not status updates.", createdAt: "2026-06-29T05:20:00.000Z" },
+    { id: "remote-comment-2", author: "Jon Bell", initials: "JB", message: "Curious whether the survey separates individual rituals from team rituals.", createdAt: "2026-06-29T06:05:00.000Z" },
+  ],
+  "balcony-gardens": [
+    { id: "garden-comment-1", author: "Nina Park", initials: "NP", message: "Shared maintenance would be the deciding factor for our building.", createdAt: "2026-06-28T11:40:00.000Z" },
+  ],
+  "first-time-managers": [
+    { id: "manager-comment-1", author: "Tara Singh", initials: "TS", message: "I started managing six months ago and would be happy to share what surprised me most.", createdAt: "2026-06-29T04:35:00.000Z" },
+  ],
+  "pricing-prototype": [
+    { id: "pricing-comment-1", author: "Eli Brooks", initials: "EB", message: "The difference between the middle and top plans is where I usually hesitate.", createdAt: "2026-06-29T02:10:00.000Z" },
+  ],
+  "onboarding-dashboard-feedback": [
+    { id: "dashboard-comment-1", author: "Rina Wu", initials: "RW", message: "Happy to review the hierarchy from a product manager perspective.", createdAt: "2026-06-28T09:15:00.000Z" },
+  ],
+};
+
 export const navigationItems: NavigationItem[] = [
-  { label: "Home", href: "#", icon: "home" },
-  { label: "Explore", href: "#", icon: "compass" },
+  { label: "Home", href: "/", icon: "home" },
+  { label: "Explore", href: "/explore", icon: "compass" },
   { label: "New Research", mobileLabel: "New Research", href: "#", icon: "plus" },
-  { label: "My Research", href: "#", icon: "file" },
-  { label: "Bookmarks", href: "#", icon: "bookmark" },
+  { label: "My Research", href: "/profile#created", icon: "file" },
+  { label: "Bookmarks", href: "/profile#bookmarks", icon: "bookmark" },
   { label: "Profile", href: "/profile", icon: "user" },
 ];
 
@@ -149,9 +169,9 @@ export const posts: ResearchPost[] = [
 ];
 
 export const trendingResearch: TrendingResearchItem[] = [
-  { title: "AI research tools", postCount: 128 },
-  { title: "Sustainable products", postCount: 86 },
-  { title: "Remote team culture", postCount: 64 },
+  { title: "Remote team culture", postCount: 64, query: "RemoteWork" },
+  { title: "Sustainable urban living", postCount: 48, query: "ClimateTech" },
+  { title: "Early-stage user research", postCount: 41, query: "UserResearch" },
 ];
 
 export const popularHashtags = [

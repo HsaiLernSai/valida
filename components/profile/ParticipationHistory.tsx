@@ -23,7 +23,7 @@ export function ParticipationHistory() {
   }, []);
 
   return (
-    <section>
+    <section id="participated" className="scroll-mt-24">
       <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">History</p><h1 className="mt-1 text-2xl font-black tracking-tight text-ink">Participated</h1><p className="mt-1 text-sm text-slate-500">Research you completed with this browser profile.</p></div>
       <div className="mt-5 space-y-3">
         {!loaded && [0, 1, 2].map((item) => <div key={item} className="h-24 animate-pulse rounded-card border border-slate-200 bg-white/70" aria-hidden="true" />)}
@@ -38,7 +38,7 @@ export function ParticipationHistory() {
               </Card>
             </a>
           ) : (
-            <Card key={record.postId} className="p-4"><p className="text-sm font-bold text-slate-500">Research unavailable</p><p className="mt-1 text-xs text-slate-400">Completed {completedDate}</p></Card>
+            <Card key={record.postId} className="p-4"><div className="flex flex-wrap items-center gap-2"><span className="text-xs font-extrabold text-brand-dark">✓ Completed</span>{record.postSnapshot && <span className="text-[10px] text-slate-400">{record.postSnapshot.goal}</span>}</div><p className="mt-1 text-sm font-bold text-slate-600">{record.postSnapshot?.title ?? "Research from an expired browser session"}</p>{record.postSnapshot?.author && <p className="mt-1 text-xs text-slate-500">{record.postSnapshot.author}</p>}<p className="mt-2 text-xs text-slate-400">Completed {completedDate} · The original request is no longer available in this tab session.</p></Card>
           );
         })}
         {loaded && items.length === 0 && <Card className="p-8 text-center"><div className="mx-auto grid h-11 w-11 place-items-center rounded-2xl bg-brand-soft text-lg font-black text-brand-dark">✓</div><p className="mt-3 text-sm font-bold text-ink">No completed research yet</p><p className="mt-1 text-xs leading-5 text-slate-500">Your native form participation will appear here.</p><a href="/" className="mt-4 inline-flex min-h-10 items-center rounded-xl px-3 text-xs font-bold text-brand transition hover:bg-brand-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">Explore research</a></Card>}

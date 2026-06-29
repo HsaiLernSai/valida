@@ -3,6 +3,7 @@ export const STORAGE_SCHEMA_VERSION = 1 as const;
 export const STORAGE_KEYS = {
   researchPosts: "valida:session-posts",
   participationHistory: "valida:participation-history",
+  communityEngagements: "valida:community-engagements",
 } as const;
 
 type StorageKind = "local" | "session";

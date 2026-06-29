@@ -13,10 +13,19 @@ export function isParticipationRecord(value: unknown): value is ParticipationRec
   if (typeof value !== "object" || value === null) return false;
   const record = value as Record<string, unknown>;
 
+  const snapshot = record.postSnapshot;
+  const validSnapshot = snapshot === undefined || (
+    typeof snapshot === "object" && snapshot !== null
+    && typeof (snapshot as Record<string, unknown>).title === "string"
+    && typeof (snapshot as Record<string, unknown>).author === "string"
+    && typeof (snapshot as Record<string, unknown>).goal === "string"
+  );
+
   return typeof record.postId === "string"
     && typeof record.completedAt === "string"
     && !Number.isNaN(Date.parse(record.completedAt))
-    && isNativeFormAnswers(record.answers);
+    && isNativeFormAnswers(record.answers)
+    && validSnapshot;
 }
 
 export function getParticipationHistory(): ParticipationRecord[] {
@@ -39,7 +48,7 @@ export function getLocalResponseCount(post: ResearchPost, history = getParticipa
   return post.responseCount + (hasCompletedResearch(post.id, history) ? 1 : 0);
 }
 
-export function saveParticipation(postId: string, answers: NativeFormAnswers): ParticipationRecord {
+export function saveParticipation(postId: string, answers: NativeFormAnswers, post?: ResearchPost): ParticipationRecord {
   const history = getParticipationHistory();
   const existing = getParticipation(postId, history);
   if (existing) return existing;
@@ -48,6 +57,7 @@ export function saveParticipation(postId: string, answers: NativeFormAnswers): P
     postId,
     answers,
     completedAt: new Date().toISOString(),
+    postSnapshot: post ? { title: post.title, author: post.author, goal: post.goal } : undefined,
   };
   writeStoredCollection("local", STORAGE_KEYS.participationHistory, [record, ...history]);
   return record;

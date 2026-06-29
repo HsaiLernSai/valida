@@ -81,3 +81,23 @@ This ledger records product milestones in implementation order. Labels are inter
 **QA status:** code/static/build gate passed. Interactive local browser automation was unavailable, so manual browser sign-off for wizard creation, all types, validation, submit, completed/history/count/persistence, and mobile remains required before the release is called fully verified.
 
 **Next sprint:** not selected. Do not begin feature work until v0.4 manual release sign-off is recorded.
+
+## v0.5A — MVP stabilization
+
+**Objective:** make the existing community MVP navigable and interactive without expanding infrastructure.
+
+**Delivered:** mobile Profile access; working community tabs; toggleable Interested state; recent and user-posted comments; copy/native share UX; explicit Detail → Start Research → Submit flow; tabbed browser-local Profile; improved expired-research history context; framework-native SEO metadata, robots, and sitemap routes.
+
+**Preserved:** frontend-only architecture, schema-v1 storage envelope, external-form boundary, existing survey behavior, and package dependencies.
+
+**Validation:** lint and production build passed. Interactive local browser control did not respond, so device interaction sign-off remains pending and must not be described as complete.
+
+## v0.5B — Static research sharing
+
+**Objective:** complete professional sharing for research that is genuinely public in the frontend-only architecture.
+
+**Delivered:** responsive Share Research dialog; copy-link feedback; native Web Share support; dependency-free QR generation and PNG download for static catalog routes; Share entry points in feed cards and Research Detail; explicit unavailable state for browser-local research.
+
+**Deferred by product decision:** public sharing of newly created/session research until authentication and server persistence are approved.
+
+**Validation:** lint, type checking, production build, and QR matrix generation checks pass. Interactive responsive/browser sign-off remains pending because local browser navigation did not respond.

@@ -9,10 +9,10 @@ This repository is a frontend-only product prototype. It intentionally has no se
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** v0.4D — Final Release QA
-- **Current objective:** validate the complete v0.4 native survey release candidate before commit and push.
+- **Product iteration:** v0.5B — Static research sharing
+- **Current objective:** finish device sign-off for dependency-free sharing on static public research routes.
 
-The code-review, static-contract, lint, and production-build gates pass. Interactive local-browser automation was unavailable during v0.4D, so final manual browser sign-off remains explicitly pending; no subsequent coding sprint is selected.
+The v0.5B implementation, lint, type-check, production-build, and QR matrix gates pass. Interactive local-browser navigation did not respond during final QA, so iPhone/iPad/Android/desktop interaction and QR scanning remain explicitly pending.
 
 ## Current architecture
 

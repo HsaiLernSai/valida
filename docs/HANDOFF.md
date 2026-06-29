@@ -9,9 +9,9 @@ The repository contains no backend, database, authentication, Supabase client, A
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** v0.4D — Final Release QA
-- **Sprint state:** v0.4A–v0.4C implementation is code-complete; static, lint, and production-build gates pass.
-- **Objective:** complete manual browser sign-off before commit/push. Interactive local-browser automation was unavailable during v0.4D, so the release is not yet recorded as browser-verified.
+- **Product iteration:** v0.5B — Static research sharing
+- **Sprint state:** implementation, lint, production-build, and QR matrix gates pass with no new dependencies.
+- **Objective:** complete manual device/share/QR scan sign-off for static public research routes.
 
 ## Completed work
 
@@ -37,11 +37,13 @@ The repository contains no backend, database, authentication, Supabase client, A
 
 1. `valida:session-posts` and `valida:participation-history` intentionally have different lifetimes. History can outlive a session-created post and then shows a graceful unavailable fallback.
 2. Browser-local duplicate prevention is not “one account = one submission”; there are no accounts.
-3. Search, tabs, reactions, bookmarks, Explore, My Research, comments, and sharing are presentational.
+3. Search, bookmarks, and Explore remain incomplete. Community tabs/interactions and static research sharing are browser-functional.
 4. External form completion is explicitly unverified and must stay that way until a real integration exists.
 5. Target/deadline states do not automatically close research.
 6. No automated unit/integration/end-to-end suite exists. Wizard focus trapping/restoration is implemented but still needs manual assistive-technology/browser sign-off.
 7. The cloud-synced workspace can generate duplicate files with ` 2` suffixes, including stale Markdown copies. Unsuffixed files are canonical; TypeScript excludes duplicate `.ts`/`.tsx`. Do not edit suffix copies or delete sync artifacts casually.
+8. The Vercel production URL is not recorded in the repository, so anonymous production access could not be verified during v0.5A.
+9. Newly created research remains session-local and is intentionally not publicly shareable; real public sharing requires future server persistence.
 
 ## Next priorities
 
