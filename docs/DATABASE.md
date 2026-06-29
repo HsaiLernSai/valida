@@ -69,7 +69,7 @@ A future normalized response needs `id`, `postId`, `formVersion`, `participantId
 
 ### ParticipationHistory / ParticipationRecord
 
-Stored as an array in `localStorage` at `valida:participation-history`.
+Stored in `localStorage` at `valida:participation-history` as `{ version: 1, data: ParticipationRecord[] }`. The adapter upgrades a valid legacy bare array on read and rejects malformed or unsupported data safely.
 
 | Field | Type | Meaning |
 | --- | --- | --- |

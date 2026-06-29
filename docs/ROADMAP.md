@@ -1,50 +1,12 @@
 # Valida Roadmap
 
-Status describes the current repository, not an external production service. Items under “In progress” are intentionally explicit; most phases have no active implementation yet.
+This roadmap separates shipped prototype capability from the next coding sprint and longer-horizon product work. “Completed” always means completed to the current frontend-only prototype contract—not production-ready or server-backed. The detailed per-feature truth lives in `FEATURE_MATRIX.md`.
 
-## Phase 1 — Community
-
-### Completed
-
-- Responsive community shell, compact feed, research cards, internal detail links, mock discovery widgets, hashtag presentation, and creation entry points.
-- Research goals, limited/unlimited responses, deadline/open-ended status, and multi-audience chips.
-
-### In progress
-
-- None. The present feed is a stable frontend prototype.
-
-### Planned
-
-- Functional search, feed sorting/tabs, hashtag filters, bookmarks, and reaction state.
-- Open/closed request rules based on target and deadline.
-
-### Future
-
-- Moderation, reporting, recommendation ranking, collections, and richer discussions.
-
-## Phase 2 — Native Forms
+## Phase 1 — Community foundation
 
 ### Completed
 
-- Native/external response choice; four native question types; required validation; builder, preview, detail rendering, local submit, duplicate protection, completed state, and read-only answers.
-
-### In progress
-
-- None. v0.2 is complete at frontend-prototype scope.
-
-### Planned
-
-- Versioned client storage, synchronized local counts, draft recovery, validation tests, and better builder accessibility.
-
-### Future
-
-- Conditional logic, sections, richer field types, response editing policy, exports, templates, and verified provider integrations.
-
-## Phase 3 — Profiles
-
-### Completed
-
-- Participation History route with completion dates and research-detail links.
+- Responsive community shell, compact feed/cards, mock discovery widgets, six research goals, response-limit/deadline metadata, audiences, hashtags, internal detail links, completed state, and local adjusted counts.
 
 ### In progress
 
@@ -52,35 +14,72 @@ Status describes the current repository, not an external production service. Ite
 
 ### Planned
 
-- Local profile/settings model, My Research, saved/bookmarked research, and clearer history states.
+- Functional search and feed tabs, real bookmark behavior, share links, QR sharing, and request close-state rules.
 
 ### Future
 
-- Public researcher profiles, expertise, reputation, organizations, teams, privacy controls, and real account identity after backend approval.
+- Recommendation ranking, richer discussion, collections, topic following, reporting, and moderation.
 
-## Phase 4 — Sharing
+## Phase 2 — Research creation and native surveys
 
 ### Completed
 
-- Research has stable client-side route shapes and external forms open in a new tab.
+- Six-step Create Research Wizard, external/native selection, four native question types, required controls, choice editing, preview, session publishing, native response validation/submission, duplicate protection, and read-only revisit.
 
 ### In progress
 
-- None; Share controls are presentational.
+- Documentation and scope preparation only; no UI implementation is currently active.
 
 ### Planned
 
-- Web Share/clipboard behavior, shareable research links, Open Graph metadata, and QR codes.
+- **Next coding sprint: Professional Native Survey UX v0.4.** Improve builder hierarchy, question editing clarity, type selection, option management, validation guidance, preview confidence, responsive behavior, and keyboard/accessibility fundamentals.
+- Focused automated tests for storage, form validation, publish, submit, completion, history, and external handoff.
+
+### Future
+
+- Templates, sections, conditional logic, richer question types, drafts, response editing policy, exports, and verified provider integrations.
+
+## Phase 3 — Profiles and personal organization
+
+### Completed
+
+- Browser-local Participation History with completion dates, detail links, and missing-session-post fallback.
+
+### In progress
+
+- None.
+
+### Planned
+
+- Local Profile clarification, Bookmarks route/storage, My Research, and saved research organization.
+
+### Future
+
+- Public profiles, expertise, reputation, teams, organizations, privacy controls, and real account identity after backend approval.
+
+## Phase 4 — Sharing and collections
+
+### Completed
+
+- Internal detail route shapes exist; external form links open from detail only.
+
+### In progress
+
+- None. Current Share controls are presentational.
+
+### Planned
+
+- Clipboard/Web Share behavior, durable share-link policy, Open Graph metadata, QR codes, and research collections.
 
 ### Future
 
 - Embeds, campaigns, referral attribution, social previews, and organization-branded sharing.
 
-## Phase 5 — Credits
+## Phase 5 — Research operations
 
 ### Completed
 
-- No credit or reward logic exists.
+- Interview-participant recruitment exists only as a research goal using the generic native/external workflow.
 
 ### In progress
 
@@ -88,17 +87,17 @@ Status describes the current repository, not an external production service. Ite
 
 ### Planned
 
-- Define earning/spending rules, anti-abuse constraints, expiry policy, and transparent balances before UI implementation.
+- Creator dashboard specifications, response management, analytics definitions, notifications, moderation, and richer interview recruitment workflows.
 
 ### Future
 
-- Participation credits, creator boosts, rewards, subscriptions, and paid research plans.
+- Scheduling, screening/quotas, team review, repositories, exports, benchmarks, and verified participant pools.
 
-## Phase 6 — Analytics
+## Phase 6 — Language, media, and advanced feedback
 
 ### Completed
 
-- Cards and detail pages display mock response and engagement counts; native detail can add one local response.
+- None. The current product is English-only and has no upload or annotation capability.
 
 ### In progress
 
@@ -106,26 +105,48 @@ Status describes the current repository, not an external production service. Ite
 
 ### Planned
 
-- Creator dashboard specifications: views, opens, starts, completions, conversion, drop-off, response timing, and audience breakdown.
+- Product/design research for multilingual architecture and safe asset workflows; no implementation commitment yet.
 
 ### Future
 
-- Funnels, cohorts, exports, AI summaries/insights, benchmarks, team reports, and privacy-aware event analytics.
+- English, Thai, Myanmar, and Chinese localization; detected/cached auto-translation; image/video/file uploads; and prototype/image annotation.
 
-## Phase 7 — Backend
+## Phase 7 — Intelligence and incentives
 
 ### Completed
 
-- Frontend types and documented relational candidates provide a starting contract. No backend code exists.
+- None.
 
 ### In progress
 
-- None. Backend, Supabase, and authentication are explicitly out of current scope.
+- None.
 
 ### Planned
 
-- Approve an architecture, define authorization/retention requirements, create migrations and APIs, then migrate browser data safely.
+- Define AI data-use, evaluation, review, and cost policies; define credit economics and anti-abuse rules before implementation.
 
 ### Future
 
-- Authentication, PostgreSQL/Supabase or approved alternative, row-level authorization, realtime notifications, file storage, jobs, observability, backups, and multi-device synchronization.
+- AI survey generation, AI summaries/insights, credits, creator boosts, participant rewards, subscriptions, and paid research plans.
+
+## Phase 8 — Backend platform
+
+### Completed
+
+- Versioned browser-storage adapters and documented model candidates provide a frontend contract. No backend capability exists.
+
+### In progress
+
+- None. Backend, authentication, database, Supabase, cloud storage, payments, and real uploads are explicitly out of scope now.
+
+### Planned
+
+- Only after explicit approval: choose architecture, define identity/authorization, consent, retention/deletion, moderation, upload security, and migration requirements.
+
+### Future
+
+- Authentication, approved database/backend, row-level authorization, object/cloud storage, realtime notifications, jobs, observability, backups, multi-device synchronization, and billing infrastructure.
+
+## Sequencing rule
+
+Do not pull a feature forward merely because a visible control already exists. Each coding sprint must name one product outcome, list explicit exclusions, preserve the external-form path, and pass lint/build. The next coding sprint remains **Professional Native Survey UX v0.4** until it is completed or deliberately reprioritized in the product docs.

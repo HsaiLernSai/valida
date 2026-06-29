@@ -86,7 +86,9 @@ Mock posts come from `lib/mock-data.ts`; newly published posts are read from `va
 - `lib/types.ts` is the shared contract boundary.
 - `lib/mock-data.ts` holds posts, navigation, discovery widgets, and quick-start data.
 - `lib/research-defaults.ts` holds wizard choices and initial values.
-- `lib/participation-storage.ts` is the current local participation adapter.
+- `lib/browser-storage.ts` owns storage keys, schema versioning, safe parsing/writing, and legacy collection upgrades.
+- `lib/research-storage.ts` validates, reads, merges, finds, and writes session-created research.
+- `lib/participation-storage.ts` validates participation, enforces idempotency, and derives completion IDs and local response counts.
 - `lib/design-tokens.ts` documents canonical visual values; repeated new styles should start there.
 
 ## Data-flow boundaries

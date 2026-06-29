@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { posts as mockPosts } from "@/lib/mock-data";
 import { getParticipationHistory } from "@/lib/participation-storage";
+import { getAvailableResearchPosts } from "@/lib/research-storage";
 import type { ParticipationRecord, ResearchPost } from "@/lib/types";
 
 interface HistoryItem {
@@ -15,8 +16,7 @@ export function ParticipationHistory() {
   const [items, setItems] = useState<HistoryItem[]>([]);
 
   useEffect(() => {
-    const sessionPosts = JSON.parse(sessionStorage.getItem("valida:session-posts") ?? "[]") as ResearchPost[];
-    const allPosts = [...sessionPosts, ...mockPosts];
+    const allPosts = getAvailableResearchPosts(mockPosts);
     setItems(getParticipationHistory().map((record) => ({ record, post: allPosts.find((post) => post.id === record.postId) })));
   }, []);
 

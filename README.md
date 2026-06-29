@@ -18,7 +18,7 @@ The prototype supports the complete browser-local journey from discovery to part
 6. Complete a native Valida form or continue to an external form.
 7. Revisit locally completed native research from Profile → Participated.
 
-Mock research is the base catalog. Newly created requests are stored in `sessionStorage`; native participation records are stored in `localStorage`.
+Mock research is the base catalog. Newly created requests are stored in versioned `sessionStorage`; native participation records are stored in versioned `localStorage`.
 
 ## Tech stack
 
@@ -96,23 +96,25 @@ See [Project Status](docs/PROJECT_STATUS.md) for the complete issue and testing 
 ## Current sprint status
 
 - **Package version:** `0.1.0`
-- **Product iteration:** Native Form v0.2
-- **State:** Native-form UX, participation continuity, documentation, and validation are complete at frontend-prototype scope.
-- **Objective:** stabilize the browser-local research journey before expanding Profile, Bookmarks, or other product surfaces.
+- **Product iteration:** Product Planning Documentation v0.4
+- **Runtime state:** Client Storage Foundation v0.3 remains the implemented frontend prototype.
+- **Objective:** start **Professional Native Survey UX v0.4** as the next coding sprint without mixing in unrelated planned or future features.
 
 There is no partially implemented product feature in the current workspace. The latest documented lint and production-build checks pass.
 
 ## Next priorities
 
-1. **Consolidate and version client storage.** Centralize keys and parsing, handle malformed/old data safely, align the lifetime of created research and participation, and synchronize local counts across feed, detail, and history.
-2. **Add focused automated coverage.** Protect storage, native validation, publish/submit/completed-state behavior, participation history, and external handoff with unit and end-to-end tests.
-3. **Finish the local Profile and Bookmarks MVP.** Add browser-local bookmark behavior and a truthful profile surface after the shared storage contract is stable.
+1. **Professional question editor foundation.** Improve native question hierarchy, type selection, required state, option editing, and empty/incomplete guidance while preserving the current data contract.
+2. **Validation and preview confidence.** Prevent invalid blank questions/choice sets and make Step 6 accurately match Research Detail.
+3. **Accessibility and regression coverage.** Improve wizard keyboard/focus behavior and protect survey/storage/external-form flows with focused tests.
 
 Acceptance criteria, dependencies, and exact files are documented in [Next Tasks](docs/NEXT_TASK.md).
 
 ## Project documentation
 
 - [Handoff](docs/HANDOFF.md) — fastest starting point for a new development session.
+- [Feature Matrix](docs/FEATURE_MATRIX.md) — authoritative Done, Current MVP, Next, Planned, Future, and Out-of-scope boundaries.
+- [Sprint History](docs/SPRINT_HISTORY.md) — completed documentation/implementation milestones and the next coding sprint.
 - [Project Status](docs/PROJECT_STATUS.md) — implementation, completed work, issues, and testing.
 - [Product Blueprint](docs/PRODUCT_BLUEPRINT.md) — vision, users, journey, and product direction.
 - [Roadmap](docs/ROADMAP.md) — phased long-term plan.

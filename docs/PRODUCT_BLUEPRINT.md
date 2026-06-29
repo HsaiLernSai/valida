@@ -62,6 +62,30 @@ Wants relevant, trustworthy requests with transparent effort, purpose, and compl
 - External form links with an explicit unverified warning.
 - Native Valida form builder, renderer, validation, submission, and local completion history.
 
+These are prototype capabilities, not production services. The current implementation uses mock data, React state, versioned `sessionStorage`, and versioned `localStorage`; it has no account identity or shared data source.
+
+## Product capability layers
+
+### Layer 1 — Discover and understand research
+
+Community Feed, compact research cards, Research Detail, goal/effort/audience/capacity/deadline metadata, hashtags, and completed state. This layer is working with mock and browser-local data. Search and feed tabs are visible but not functional.
+
+### Layer 2 — Create a research request
+
+The six-step Create Research Wizard supports six goals, external or native collection, multiple audiences, response limits, timing, hashtags, preview, and session publishing. The next coding sprint improves the native survey creation experience; it does not add infrastructure.
+
+### Layer 3 — Participate and retain local history
+
+Native questions can be validated and submitted once per browser profile, then revisited read-only. External forms remain first-class but unverified. Participation History is browser-local and gracefully handles a missing session-created post.
+
+### Layer 4 — Manage and learn
+
+Bookmarks, creator dashboard, authoritative response management, analytics, notifications, collections, and moderation are not implemented. They require individual scoped sprints and, for authoritative/cross-device behavior, later backend decisions.
+
+### Layer 5 — Scale the network
+
+Credits, organizations, AI assistance, multilingual translation, media/file uploads, annotation, verified integrations, authentication, database, and cloud storage are future capabilities. They are not part of the current MVP.
+
 ## Create Research Wizard flow
 
 1. **Goal:** choose a supported research goal.
@@ -73,11 +97,22 @@ Wants relevant, trustworthy requests with transparent effort, purpose, and compl
 
 ## Future features
 
-- Functional discovery, bookmarks, comments, reactions, notifications, messaging, profiles, organizations, sharing, QR codes, and collections.
-- Creator response inbox, exports, analytics, form templates, conditional logic, credits/rewards, moderation, and verification.
-- Auto-translation in English, Thai, Myanmar, and Chinese with detected source language and cached translated content.
-- Verified Google Forms, Microsoft Forms, and Typeform integrations; current external links remain supported but unverified.
-- Backend accounts and cross-device synchronization only after explicit product approval.
+- **Planned product work:** functional search/feed tabs, bookmarks, share links/QR codes, research collections, creator dashboard, analytics, notifications, moderation, and richer interview workflows.
+- **Future research tooling:** form templates, conditional logic, additional question types, prototype/image annotation, response exports, and verified Google Forms, Microsoft Forms, and Typeform integrations. Current external links remain supported but unverified.
+- **Future language support:** English, Thai, Myanmar, and Chinese UI/content support plus auto-translation with detected source language and cached translated content. None is implemented today.
+- **Future media:** image, video, and file uploads only after storage, security, moderation, retention, privacy, limits, and cost policies are approved. There is no real upload logic today.
+- **Future intelligence:** AI survey generation and AI response summaries only with explicit data-use policy, quality evaluation, human review, and provider/cost decisions.
+- **Future platform:** credits/rewards, organizations, backend accounts, authentication, database persistence, cloud storage, and cross-device synchronization only after explicit product approval.
+
+The authoritative implementation status is maintained in `FEATURE_MATRIX.md`; uncommitted concepts belong in `IDEA_BACKLOG.md`.
+
+## Next product sprint
+
+The next coding sprint is **Professional Native Survey UX v0.4**.
+
+Its goal is to improve the existing native survey builder and preview so creating a clear survey feels deliberate and professional. It should refine question-card hierarchy, type selection, required-state clarity, option editing, validation guidance, builder navigation, empty states, and responsive/keyboard usability while preserving existing form data and response behavior.
+
+The sprint must not absorb unrelated features. It excludes uploads, annotations, translation, AI, sharing, profiles/bookmarks, analytics, credits, notifications, backend, authentication, database, cloud storage, and payment work.
 
 ## Product philosophy
 

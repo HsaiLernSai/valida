@@ -9,10 +9,10 @@ This repository is a frontend-only product prototype. It intentionally has no se
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** Native Form v0.2 / documentation and stabilization handoff
-- **Current objective:** preserve the working community-to-participation journey, document the implementation accurately, and make the next sprint safe to start.
+- **Product iteration:** Product Planning Documentation v0.4
+- **Current objective:** establish a product-management layer that separates implemented MVP, next work, planned capabilities, future ideas, and current exclusions.
 
-There is no partially implemented feature branch in the current workspace. The active work is documentation and validation; product additions listed later are planned work.
+This is a documentation-only sprint; runtime behavior remains Client Storage Foundation v0.3. The next coding sprint is **Professional Native Survey UX v0.4**.
 
 ## Current architecture
 
@@ -36,10 +36,12 @@ There is no partially implemented feature branch in the current workspace. The a
 
 - Static catalog data comes from `lib/mock-data.ts`.
 - Wizard data lives in React state until publish.
-- Published posts are prepended in `ResearchWorkspace` and stored in `sessionStorage` under `valida:session-posts`. They survive navigation and refresh in the same tab session, but not a new browser session.
-- Native submissions are stored in `localStorage` under `valida:participation-history` through `lib/participation-storage.ts`.
+- `lib/browser-storage.ts` owns storage keys, schema version `1`, versioned collection envelopes, SSR-safe access, parsing, legacy-array upgrades, and failure handling.
+- Published posts are prepended in `ResearchWorkspace` and stored through `lib/research-storage.ts` in `sessionStorage` under `valida:session-posts`. They survive navigation and refresh in the same tab session, but not a new browser session.
+- Native submissions are stored through `lib/participation-storage.ts` in `localStorage` under `valida:participation-history`.
+- Valid legacy bare arrays are upgraded to the v1 envelope on read. Invalid JSON, invalid record shapes, inaccessible storage, and unsupported schema versions resolve to empty collections without crashing.
 - Duplicate native submissions are blocked by `postId` in that browser profile.
-- Research detail adds one to the displayed response count after a local submission. There is no shared or authoritative count.
+- Feed, detail, and history use the same participation helpers. A locally completed native request displays `responseCount + 1` in both feed and detail; there is still no shared or authoritative count.
 - External submissions leave Valida and cannot be verified in this MVP.
 
 ## Completed features
@@ -76,18 +78,20 @@ There is no partially implemented feature branch in the current workspace. The a
 
 - Shared UI components for buttons, cards, badges, search, icons, and the CSS-only Valida logo.
 - Central TypeScript models, mock-data catalog, research defaults, participation-storage helper, and design-token catalog.
+- Centralized versioned browser storage with typed runtime guards for session research and participation records.
 - Blue/purple brand gradient, restrained orange accent, soft canvas, responsive sidebars, mobile bottom navigation, and compact create controls.
 
 ## Features in progress
 
-No product feature is currently half-built. The nearest planned work is a consolidated, versioned client-storage layer so feed counts, detail counts, created research, and history use one coherent source of truth. Search, tabs, reactions, bookmarks, and most navigation destinations are presentational rather than active development.
+No product feature is currently half-built. Product planning documentation is the only active work. The next coding sprint will improve the existing native survey builder, validation guidance, preview confidence, accessibility, and regression coverage. Search, tabs, reactions, bookmarks, and most navigation destinations remain presentational and are not part of that sprint.
+
+The status of every named capability is maintained in `FEATURE_MATRIX.md`; completed milestone history is maintained in `SPRINT_HISTORY.md`.
 
 ## Known issues
 
 - Browser storage is not an account: clearing storage, changing browsers, or changing devices loses state, and “one account = one submission” is only approximated by one browser profile.
-- Created posts use `sessionStorage`, while participation uses `localStorage`. A participation record can outlive a session-created post and then lack display metadata in History.
-- A completed card keeps its original mock response count; the detail view alone adds the local submission to the displayed count.
-- Stored JSON is unversioned and only guarded by JSON parsing, not runtime schema validation or migration.
+- Created posts intentionally use `sessionStorage`, while participation uses `localStorage`. A participation record can outlive a session-created post; History handles this with a non-clickable “Research unavailable” fallback and the completion date.
+- Storage validation is hand-written and collection-level: one invalid item causes that stored collection to resolve safely to empty. There is not yet a formal migration framework beyond the v0 bare-array upgrade.
 - Feed tabs, search, Interested, Comment, Share, Explore, My Research, Bookmarks, and most navigation items are visual only.
 - External-provider completion cannot be detected or verified.
 - Deadlines are displayed but are not used to close requests; limited requests are not automatically closed at their target.
@@ -123,6 +127,8 @@ See `DATABASE.md` for every field, status, and relationship.
 
 ## Tested features
 
+- Product Planning Documentation v0.4 passed `npm run lint` and `npm run build` on June 29, 2026; no application code or runtime behavior changed.
+- Client Storage Foundation v0.3 passed `npm run lint` and `npm run build` on June 29, 2026; the development server also returned HTTP 200 for `/`.
 - `npm run lint` and `npm run build` passed after the documentation sprint on June 28, 2026.
 - Production build routes for `/`, `/profile`, and `/research/[id]` were generated successfully.
 - Native required-field gating, submission, local response increment, success state, duplicate prevention, and read-only revisit were manually exercised.

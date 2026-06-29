@@ -7,7 +7,8 @@ import { ResearchMetaPanel } from "@/components/research/ResearchMetaPanel";
 import { Card } from "@/components/ui/Card";
 import { ValidaLogo } from "@/components/ui/ValidaLogo";
 import { posts as mockPosts } from "@/lib/mock-data";
-import { getParticipation, saveParticipation } from "@/lib/participation-storage";
+import { getLocalResponseCount, getParticipation, getParticipationHistory, saveParticipation } from "@/lib/participation-storage";
+import { findAvailableResearchPost } from "@/lib/research-storage";
 import type { NativeFormAnswers, ParticipationRecord, ResearchPost } from "@/lib/types";
 
 export function ResearchDetail({ researchId }: { researchId: string }) {
@@ -17,16 +18,13 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
   const [responseCount, setResponseCount] = useState(0);
 
   useEffect(() => {
-    let resolvedPost = mockPosts.find((item) => item.id === researchId) ?? null;
-    if (!resolvedPost) {
-      const sessionPosts = JSON.parse(sessionStorage.getItem("valida:session-posts") ?? "[]") as ResearchPost[];
-      resolvedPost = sessionPosts.find((item) => item.id === researchId) ?? null;
-      setPost(resolvedPost);
-    }
+    const resolvedPost = findAvailableResearchPost(researchId, mockPosts) ?? null;
+    setPost(resolvedPost);
     if (resolvedPost) {
-      const existingParticipation = getParticipation(researchId) ?? null;
+      const history = getParticipationHistory();
+      const existingParticipation = getParticipation(researchId, history) ?? null;
       setParticipation(existingParticipation);
-      setResponseCount(resolvedPost.responseCount + (existingParticipation ? 1 : 0));
+      setResponseCount(getLocalResponseCount(resolvedPost, history));
     }
     setHydrated(true);
   }, [researchId]);
@@ -35,7 +33,7 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
     if (!post || participation) return;
     const record = saveParticipation(post.id, answers);
     setParticipation(record);
-    setResponseCount((current) => current + 1);
+    setResponseCount(getLocalResponseCount(post));
   };
 
   if (!hydrated && !post) return <div className="grid min-h-screen place-items-center bg-app-gradient text-sm text-slate-500">Loading research…</div>;
@@ -59,7 +57,7 @@ export function ResearchDetail({ researchId }: { researchId: string }) {
               <div className="mt-4 flex flex-wrap gap-2">{post.hashtags.map((tag) => <span key={tag} className="text-xs font-bold text-brand">#{tag}</span>)}</div>
             </Card>
             {post.responseMethod === "native" ? (
-              <Card as="section" className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Valida Native Form</p><h2 className="mt-1 text-lg font-extrabold text-ink">{participation ? "✓ You already participated." : "Submit your response"}</h2><p className="mb-5 mt-1 text-xs text-slate-500">{participation ? "Your submitted responses are shown below in read-only mode." : "Required questions are marked with an asterisk."}</p><NativeFormRenderer post={post} embedded submitted={Boolean(participation)} initialAnswers={participation?.answers} onSubmit={submitResponse} /></Card>
+              <NativeFormRenderer post={post} embedded submitted={Boolean(participation)} initialAnswers={participation?.answers} onSubmit={submitResponse} />
             ) : <ExternalFormPanel externalLink={post.externalLink} />}
           </div>
           <ResearchMetaPanel post={post} responseCount={responseCount} />

@@ -8,15 +8,18 @@ export function ResearchMetaPanel({ post, responseCount }: { post: ResearchPost;
   const deadline = post.deadline ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${post.deadline}T00:00:00Z`)) : null;
 
   return (
-    <Card as="aside" className="p-4">
-      <h2 className="text-sm font-extrabold text-ink">Research details</h2>
-      <dl className="mt-4 space-y-3 text-xs">
-        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Goal</dt><dd><Badge className={post.goalStyle}>{post.goal}</Badge></dd></div>
+    <Card as="aside" className="overflow-hidden p-0">
+      <div className="border-b border-slate-100 bg-gradient-to-br from-white to-blue-50/70 px-4 py-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">At a glance</p>
+        <h2 className="mt-1 text-sm font-extrabold text-ink">Research details</h2>
+      </div>
+      <dl className="space-y-3 px-4 py-4 text-xs">
+        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Goal</dt><dd className="text-right"><Badge className={post.goalStyle}>{post.goal}</Badge></dd></div>
         <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Estimated time</dt><dd className="font-bold text-ink">{post.estimatedTime}</dd></div>
-        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Response method</dt><dd className="font-bold capitalize text-ink">{post.responseMethod}</dd></div>
-        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Timing</dt><dd className="font-bold text-ink">{post.timeMode === "deadline" ? `Closes ${deadline}` : "Open-ended"}</dd></div>
+        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Response method</dt><dd className="font-bold text-ink">{post.responseMethod === "native" ? "Valida native" : "External form"}</dd></div>
+        <div className="flex items-center justify-between gap-4"><dt className="text-slate-400">Timing</dt><dd className="text-right font-bold text-ink">{post.timeMode === "deadline" ? `Closes ${deadline}` : "Open-ended"}</dd></div>
       </dl>
-      <div className="mt-4 border-t border-slate-100 pt-4">
+      <div className="border-t border-slate-100 bg-slate-50/60 px-4 py-4">
         {post.responseMode === "limited" ? (
           <>
             <div className="flex items-center justify-between gap-3 text-xs"><span className="font-bold text-brand-dark">{responseCount} / {responseTarget} responses</span><span className="text-slate-400">{Math.max(responseTarget - responseCount, 0)} needed</span></div>

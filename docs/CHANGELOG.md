@@ -2,6 +2,27 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.3 — Versioned client storage foundation
+
+### Completed features
+
+- Central storage keys and schema version `1` in `lib/browser-storage.ts`.
+- Versioned collection envelopes for session-created research and participation history.
+- SSR-safe, exception-safe reads and writes for `sessionStorage` and `localStorage`.
+- Runtime record guards for research posts, native questions, participation records, and answer values.
+- Automatic upgrade of valid legacy bare arrays to the v1 envelope.
+- Safe empty-state behavior for malformed JSON, invalid record shapes, unavailable browser storage, and unsupported schema versions.
+- Typed research storage helpers for reading, merging, finding, and adding session-created posts.
+- Shared completion selectors and locally adjusted response counts across feed, detail, and history.
+- Graceful history fallback when a local participation record outlives its session-created research post.
+
+### Improvements
+
+- Native submission remains idempotent by `postId` through the shared participation adapter.
+- Feed cards and research detail now both display the same local `responseCount + 1` after native participation.
+- Components no longer parse or write product storage directly.
+- External research still enters internal detail first and remains explicitly unverified.
+
 ## v0.2 — Native Form UX and participation continuity
 
 ### Completed features

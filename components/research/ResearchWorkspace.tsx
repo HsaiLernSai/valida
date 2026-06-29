@@ -6,29 +6,29 @@ import { AppShell } from "@/components/layout/AppShell";
 import { CreateResearchWizard } from "@/components/research/CreateResearchWizard";
 import { posts as initialPosts } from "@/lib/mock-data";
 import { getParticipationHistory } from "@/lib/participation-storage";
-import type { ResearchPost } from "@/lib/types";
+import { addSessionResearchPost, getAvailableResearchPosts } from "@/lib/research-storage";
+import type { ParticipationRecord, ResearchPost } from "@/lib/types";
 
 export function ResearchWorkspace() {
   const [posts, setPosts] = useState<ResearchPost[]>(initialPosts);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [completedPostIds, setCompletedPostIds] = useState<Set<string>>(() => new Set());
+  const [participationHistory, setParticipationHistory] = useState<ParticipationRecord[]>([]);
 
   useEffect(() => {
-    const sessionPosts = JSON.parse(sessionStorage.getItem("valida:session-posts") ?? "[]") as ResearchPost[];
-    setPosts([...sessionPosts, ...initialPosts.filter((post) => !sessionPosts.some((sessionPost) => sessionPost.id === post.id))]);
-    setCompletedPostIds(new Set(getParticipationHistory().map((record) => record.postId)));
+    setPosts(getAvailableResearchPosts(initialPosts));
+    setParticipationHistory(getParticipationHistory());
   }, []);
+
   const publishResearch = (post: ResearchPost) => {
     setPosts((current) => [post, ...current]);
-    const storedPosts = JSON.parse(sessionStorage.getItem("valida:session-posts") ?? "[]") as ResearchPost[];
-    sessionStorage.setItem("valida:session-posts", JSON.stringify([post, ...storedPosts.filter((item) => item.id !== post.id)]));
+    addSessionResearchPost(post);
     setIsWizardOpen(false);
   };
 
   return (
     <>
       <AppShell onCreateResearch={() => setIsWizardOpen(true)}>
-        <Feed posts={posts} completedPostIds={completedPostIds} />
+        <Feed posts={posts} participationHistory={participationHistory} />
       </AppShell>
       {isWizardOpen && <CreateResearchWizard onClose={() => setIsWizardOpen(false)} onPublish={publishResearch} />}
     </>

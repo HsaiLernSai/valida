@@ -1,55 +1,60 @@
 # Next Tasks
 
-Only the three immediate priorities belong here. Backend, authentication, credits, and broader roadmap work remain explicitly out of scope.
+## Next coding sprint — Professional Native Survey UX v0.4
 
-## Priority 1 — Consolidate and version client storage
+**Outcome:** make the existing native survey builder and preview feel clear, efficient, trustworthy, responsive, and keyboard-usable without changing infrastructure or mixing in unrelated roadmap features.
 
-**Goal:** Make session-created research, participation, and local response counts use a small typed storage API with schema versioning and safe malformed-data handling. Resolve the current mismatch where detail shows the local `+1` but feed cards retain the base count.
+**Sprint guardrails:** frontend-only; preserve the four existing question types and stored data shape; preserve external forms and current routes; no uploads, annotation, translation, AI, profiles/bookmarks, analytics, credits, notifications, backend, auth, database, Supabase, cloud storage, payments, or real file handling.
 
-**Files involved:** `lib/participation-storage.ts`, a new `lib/research-storage.ts` or equivalent shared adapter, `components/research/ResearchWorkspace.tsx`, `components/research/ResearchDetail.tsx`, `components/profile/ParticipationHistory.tsx`, `components/feed/PostCard.tsx`, and `lib/types.ts`.
+## Priority 1 — Professional question editor foundation
+
+**Goal:** Refine the existing `NativeFormBuilder` into a focused question-editing experience with clear question hierarchy, type selection, required state, option editing, add/delete actions, and useful empty state. Keep components small rather than growing one monolith.
+
+**Files involved:** `components/research/NativeFormBuilder.tsx`, `components/research/ResponseMethodStep.tsx`, focused new question-editor components under `components/research/`, `components/ui/` primitives where genuinely reusable, `lib/types.ts`, and `lib/research-defaults.ts`.
 
 **Acceptance criteria:**
 
-- Storage keys and schema versions are centralized.
-- Invalid or old JSON fails safely without crashing a route.
-- One native submission remains idempotent by post ID.
-- Feed, detail, and history derive the same completed state and locally adjusted response count.
-- Session-created post metadata remains resolvable for every retained history item, or retention is made intentionally consistent.
-- Existing external-form behavior is unchanged.
+- Short answer, paragraph, multiple choice, and checkbox remain supported with the existing `NativeFormQuestion` contract.
+- Each question clearly shows its type, prompt, required state, options where applicable, and delete action.
+- Multiple-choice/checkbox options can be added, edited, and removed without losing unrelated draft data.
+- New questions receive collision-safe IDs within the current frontend session.
+- Empty and incomplete question states provide actionable guidance.
+- The editor remains usable on mobile and desktop and does not redesign the rest of the wizard.
+- External-link creation is unchanged.
 - `npm run lint` and `npm run build` pass.
 
-**Dependencies:** Existing `ResearchPost`, `ParticipationRecord`, mock data, and browser storage behavior. No external package or backend is required.
+**Dependencies:** Existing wizard state, `NativeFormQuestion`, design tokens, shared controls, and current builder behavior. No new persistence or service dependency.
 
-## Priority 2 — Add focused automated coverage
+## Priority 2 — Validation and preview confidence
 
-**Goal:** Protect the working native-form journey before more product surfaces are added.
+**Goal:** Make creation-time validation and Step 6 preview accurately communicate what participants will receive before publication.
 
-**Files involved:** `package.json`, test configuration selected by the developer, tests adjacent to `lib/participation-storage.ts`, `CreateResearchWizard.tsx`, `NativeFormRenderer.tsx`, `ResearchDetail.tsx`, and one browser-level happy-path specification.
-
-**Acceptance criteria:**
-
-- Unit tests cover malformed storage, duplicate saves, required short/paragraph/single/multi-choice validation, and publish-data conversion.
-- An integration or end-to-end test covers publish → detail → native submit → completed feed state → participation history.
-- External links remain internal-detail-first and then open in a new tab.
-- The test command is documented and deterministic.
-- Lint, tests, and production build pass.
-
-**Dependencies:** Priority 1 should land first so tests target one storage contract. Selecting a test runner is an explicit engineering decision, not an implicit dependency addition.
-
-## Priority 3 — Finish local Profile and Bookmarks MVP
-
-**Goal:** Turn existing Profile/Bookmarks navigation into coherent frontend-only product surfaces without introducing identity claims that browser storage cannot support.
-
-**Files involved:** `app/profile/page.tsx`, a new `app/bookmarks/page.tsx`, `components/profile/ParticipationHistory.tsx`, new focused profile/bookmark components, `components/layout/LeftSidebar.tsx`, `components/feed/PostCard.tsx`, `lib/types.ts`, and the consolidated storage adapter from Priority 1.
+**Files involved:** `components/research/CreateResearchWizard.tsx`, `components/research/NativeFormBuilder.tsx`, `components/research/PreviewPublishStep.tsx`, `components/research/NativeFormRenderer.tsx`, and small validation helpers under `lib/` if shared by builder and renderer.
 
 **Acceptance criteria:**
 
-- Users can bookmark/unbookmark a research request and see it on `/bookmarks`.
-- Profile clearly labels data as local to the current browser.
-- Participation history and bookmarks handle missing/session-expired posts gracefully.
-- Metadata remains non-clickable; research titles/CTAs open internal detail.
-- Mobile and desktop navigation reach both surfaces.
-- No backend, authentication, or fake cross-device guarantees are added.
+- Blank prompts and invalid empty choice sets cannot silently publish.
+- Validation appears near the affected question and preserves entered data.
+- Preview uses the same labels, required indicators, option order, and control types as Research Detail.
+- External-form preview and publication remain unchanged.
+- Existing native submissions remain idempotent and completed responses remain read-only.
+- No new question types or conditional logic are introduced in this sprint.
 - `npm run lint` and `npm run build` pass.
 
-**Dependencies:** Priority 1 storage contract and current research-detail routes. Automated coverage from Priority 2 is strongly preferred before expanding storage state.
+**Dependencies:** Priority 1 question-editor structure and current `NativeFormRenderer` contract.
+
+## Priority 3 — Accessibility and regression coverage
+
+**Goal:** Protect the professional survey flow with keyboard/focus improvements and focused automated tests.
+
+**Files involved:** the Priority 1–2 components, `components/research/CreateResearchWizard.tsx`, `lib/browser-storage.ts`, `lib/research-storage.ts`, `lib/participation-storage.ts`, `package.json`, selected test configuration, and focused unit/component/browser specifications.
+
+**Acceptance criteria:**
+
+- Question type, required, add-option, delete, wizard navigation, close, preview, and publish controls are keyboard operable with visible focus.
+- Wizard dialog focus entry, Escape/close behavior, and trigger focus restoration are audited and corrected within the existing modal design.
+- Tests cover question validation, option mutations, preview parity, native publish/submit/completed revisit, storage schema failures/upgrades, and external handoff.
+- The documented test command is deterministic.
+- `npm run lint`, the chosen test command, and `npm run build` pass.
+
+**Dependencies:** Priorities 1 and 2. Selecting a test runner remains an explicit engineering choice; do not add unrelated tooling.
