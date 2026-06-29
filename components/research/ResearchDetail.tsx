@@ -1,0 +1,70 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ExternalFormPanel } from "@/components/research/ExternalFormPanel";
+import { NativeFormRenderer } from "@/components/research/NativeFormRenderer";
+import { ResearchMetaPanel } from "@/components/research/ResearchMetaPanel";
+import { Card } from "@/components/ui/Card";
+import { ValidaLogo } from "@/components/ui/ValidaLogo";
+import { posts as mockPosts } from "@/lib/mock-data";
+import { getParticipation, saveParticipation } from "@/lib/participation-storage";
+import type { NativeFormAnswers, ParticipationRecord, ResearchPost } from "@/lib/types";
+
+export function ResearchDetail({ researchId }: { researchId: string }) {
+  const [post, setPost] = useState<ResearchPost | null>(() => mockPosts.find((item) => item.id === researchId) ?? null);
+  const [hydrated, setHydrated] = useState(false);
+  const [participation, setParticipation] = useState<ParticipationRecord | null>(null);
+  const [responseCount, setResponseCount] = useState(0);
+
+  useEffect(() => {
+    let resolvedPost = mockPosts.find((item) => item.id === researchId) ?? null;
+    if (!resolvedPost) {
+      const sessionPosts = JSON.parse(sessionStorage.getItem("valida:session-posts") ?? "[]") as ResearchPost[];
+      resolvedPost = sessionPosts.find((item) => item.id === researchId) ?? null;
+      setPost(resolvedPost);
+    }
+    if (resolvedPost) {
+      const existingParticipation = getParticipation(researchId) ?? null;
+      setParticipation(existingParticipation);
+      setResponseCount(resolvedPost.responseCount + (existingParticipation ? 1 : 0));
+    }
+    setHydrated(true);
+  }, [researchId]);
+
+  const submitResponse = (answers: NativeFormAnswers) => {
+    if (!post || participation) return;
+    const record = saveParticipation(post.id, answers);
+    setParticipation(record);
+    setResponseCount((current) => current + 1);
+  };
+
+  if (!hydrated && !post) return <div className="grid min-h-screen place-items-center bg-app-gradient text-sm text-slate-500">Loading research…</div>;
+  if (!post) return <div className="grid min-h-screen place-items-center bg-app-gradient px-5 text-center"><div><h1 className="text-2xl font-extrabold text-ink">Research not found</h1><p className="mt-2 text-sm text-slate-500">This request may have expired with a previous browser session.</p><a href="/" className="mt-5 inline-block text-sm font-bold text-brand">Return to community</a></div></div>;
+
+  const targetAudiences = Array.isArray(post.targetAudience) ? post.targetAudience : [post.targetAudience];
+
+  return (
+    <div className="min-h-screen bg-app-gradient">
+      <header className="border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8"><ValidaLogo variant="compact" /><a href="/" className="text-xs font-bold text-slate-500 transition hover:text-brand">← Back to community</a></div>
+      </header>
+      <main className="mx-auto max-w-6xl px-5 py-7 sm:px-8 sm:py-10">
+        <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_290px]">
+          <div className="space-y-5">
+            <Card as="article" className="p-5 sm:p-7">
+              <div className="flex items-center gap-3"><div className={`grid h-10 w-10 place-items-center rounded-full text-xs font-extrabold ${post.avatarStyle}`}>{post.initials}</div><div><p className="text-sm font-bold text-ink">{post.author}</p><p className="text-xs text-slate-500">{post.role} · {post.time}</p></div></div>
+              <h1 className="mt-5 text-2xl font-black tracking-[-0.035em] text-ink sm:text-4xl">{post.title}</h1>
+              <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">{post.description}</p>
+              <div className="mt-5"><p className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Target audience</p><div className="mt-2 flex flex-wrap gap-2">{targetAudiences.map((audience) => <span key={audience} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600">{audience}</span>)}</div></div>
+              <div className="mt-4 flex flex-wrap gap-2">{post.hashtags.map((tag) => <span key={tag} className="text-xs font-bold text-brand">#{tag}</span>)}</div>
+            </Card>
+            {post.responseMethod === "native" ? (
+              <Card as="section" className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Valida Native Form</p><h2 className="mt-1 text-lg font-extrabold text-ink">{participation ? "✓ You already participated." : "Submit your response"}</h2><p className="mb-5 mt-1 text-xs text-slate-500">{participation ? "Your submitted responses are shown below in read-only mode." : "Required questions are marked with an asterisk."}</p><NativeFormRenderer post={post} embedded submitted={Boolean(participation)} initialAnswers={participation?.answers} onSubmit={submitResponse} /></Card>
+            ) : <ExternalFormPanel externalLink={post.externalLink} />}
+          </div>
+          <ResearchMetaPanel post={post} responseCount={responseCount} />
+        </div>
+      </main>
+    </div>
+  );
+}
