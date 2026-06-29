@@ -31,6 +31,7 @@ export function ProfileShell({ initialSection = "Overview" }: { initialSection?:
           <ValidaLogo variant="compact" />
           <nav aria-label="Profile navigation" className="flex items-center gap-2">
             <a href="/" className="rounded-xl px-2 py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-brand">Community</a>
+            <a href="/settings" className="rounded-xl px-2 py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-brand">Settings</a>
             {user && <LogoutButton className="min-h-10 px-3" />}
           </nav>
         </div>

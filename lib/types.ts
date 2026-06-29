@@ -13,7 +13,8 @@ export type IconName =
   | "support"
   | "comment"
   | "share"
-  | "arrow";
+  | "arrow"
+  | "settings";
 
 export type ResearchGoal =
   | "Collect Survey"
@@ -80,6 +81,29 @@ export interface AuthUser {
   avatar: string;
   preferredLanguage: string;
   createdAt: string;
+  bio?: string;
+  accountStatus?: string;
+}
+
+export type ThemePreference = "light" | "dark" | "system";
+
+export interface UserSettings {
+  theme: ThemePreference;
+  notifications: {
+    researchUpdates: boolean;
+    commentNotifications: boolean;
+    productAnnouncements: boolean;
+  };
+  privacy: {
+    publicProfile: boolean;
+    showParticipatedResearch: boolean;
+    showBookmarks: boolean;
+  };
+  researchPreferences: {
+    defaultResearchLanguage: string;
+    defaultAudience: string;
+    defaultResearchType: ResearchGoal;
+  };
 }
 
 export type FeedView = "For You" | "Following Hashtags" | "Latest";

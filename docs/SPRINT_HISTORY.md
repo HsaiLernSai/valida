@@ -111,3 +111,13 @@ This ledger records product milestones in implementation order. Labels are inter
 **Preserved:** no backend, database, OAuth provider, email verification, profile editing, avatar upload, credits, notifications, uploads, AI, testing framework, or dependency changes.
 
 **Validation:** `npm run lint` and `npm run build` pass. Stop and wait for Product approval before opening v0.6B.
+
+## v0.6B — User profile and settings foundation
+
+**Objective:** make the authenticated local user workspace and settings experience feel complete and ready for future backend integration.
+
+**Delivered:** professional Profile account details; local editing for display name, bio, and preferred language; dedicated protected `/settings` page; Account, Appearance, Language, Notifications, Privacy, Research Preferences, and Danger Zone settings; persisted Light/Dark/System theme preference; authenticated Settings navigation.
+
+**Preserved:** frontend-only architecture, local persistence boundary, auth foundation, existing research/community/sharing/discovery behavior, and package dependencies.
+
+**Validation:** `npm run lint` and `npm run build` pass. Stop and wait for Product approval before opening v0.6C.

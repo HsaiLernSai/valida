@@ -40,6 +40,8 @@ export function createLocalUser(email: string, displayName?: string): AuthUser {
     avatar: "YU",
     preferredLanguage: "en",
     createdAt: new Date().toISOString(),
+    bio: "",
+    accountStatus: "Local active",
   };
 }
 

@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { ParticipationHistory } from "@/components/profile/ParticipationHistory";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { saveAuthUser } from "@/lib/auth-storage";
 import { getCommunityEngagements } from "@/lib/community-storage";
 import { getParticipationHistory } from "@/lib/participation-storage";
 import { getSessionResearchPosts } from "@/lib/research-storage";
@@ -19,24 +21,57 @@ const sectionFromHash: Record<string, ProfileSection> = {
 };
 
 export function ProfileOverview({ user, initialSection = "Overview" }: { user: AuthUser; initialSection?: ProfileSection }) {
+  const [profileUser, setProfileUser] = useState(user);
   const [activeSection, setActiveSection] = useState<ProfileSection>(initialSection);
   const [createdResearch, setCreatedResearch] = useState<ResearchPost[]>([]);
   const [participationCount, setParticipationCount] = useState(0);
   const [interestedCount, setInterestedCount] = useState(0);
+  const [editing, setEditing] = useState(false);
+  const [draftDisplayName, setDraftDisplayName] = useState(user.displayName);
+  const [draftBio, setDraftBio] = useState(user.bio ?? "");
+  const [draftLanguage, setDraftLanguage] = useState(user.preferredLanguage);
+  const [feedback, setFeedback] = useState("");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    setProfileUser(user);
+    setDraftDisplayName(user.displayName);
+    setDraftBio(user.bio ?? "");
+    setDraftLanguage(user.preferredLanguage);
     setCreatedResearch(getSessionResearchPosts());
     setParticipationCount(getParticipationHistory().length);
     setInterestedCount(getCommunityEngagements().filter((item) => item.interested).length);
     setActiveSection(sectionFromHash[window.location.hash] ?? initialSection);
     setLoaded(true);
-  }, [initialSection]);
+  }, [initialSection, user]);
 
   const selectSection = (section: ProfileSection) => {
     setActiveSection(section);
     const hash = section === "My Research" ? "created" : section === "Participation" ? "participated" : section.toLowerCase();
     window.history.replaceState(null, "", section === "Overview" ? window.location.pathname : `#${hash}`);
+  };
+  const joinDate = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(profileUser.createdAt));
+  const saveProfile = () => {
+    const nextUser = {
+      ...profileUser,
+      displayName: draftDisplayName.trim() || profileUser.displayName,
+      bio: draftBio.trim(),
+      preferredLanguage: draftLanguage,
+    };
+    if (!saveAuthUser(nextUser)) {
+      setFeedback("Could not save profile changes in this browser.");
+      return;
+    }
+    setProfileUser(nextUser);
+    setEditing(false);
+    setFeedback("Profile saved locally.");
+  };
+  const cancelEdit = () => {
+    setDraftDisplayName(profileUser.displayName);
+    setDraftBio(profileUser.bio ?? "");
+    setDraftLanguage(profileUser.preferredLanguage);
+    setEditing(false);
+    setFeedback("");
   };
 
   return (
@@ -45,10 +80,10 @@ export function ProfileOverview({ user, initialSection = "Overview" }: { user: A
         <div className="h-24 bg-brand-gradient sm:h-28" />
         <div className="px-5 pb-5 sm:px-7 sm:pb-7">
           <div className="-mt-10 flex flex-col gap-4 sm:-mt-11 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex items-end gap-4"><div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl border-4 border-white bg-gradient-to-br from-blue-200 to-violet-300 text-xl font-black text-indigo-900 shadow-soft sm:h-24 sm:w-24">{user.avatar}</div><div className="pb-1"><h1 className="text-2xl font-black tracking-tight text-ink">{user.displayName}</h1><p className="mt-0.5 text-sm font-semibold text-slate-500">{user.email}</p></div></div>
-            <span className="w-fit rounded-full bg-brand-soft px-3 py-1.5 text-xs font-bold text-brand-dark">Signed-in local session</span>
+            <div className="flex items-end gap-4"><div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl border-4 border-white bg-gradient-to-br from-blue-200 to-violet-300 text-xl font-black text-indigo-900 shadow-soft sm:h-24 sm:w-24">{profileUser.avatar}</div><div className="pb-1"><h1 className="text-2xl font-black tracking-tight text-ink">{profileUser.displayName}</h1><p className="mt-0.5 text-sm font-semibold text-slate-500">{profileUser.email}</p></div></div>
+            <div className="flex flex-wrap items-center gap-2"><a href="/settings" className="inline-flex min-h-9 items-center rounded-xl bg-white px-3 text-xs font-bold text-slate-600 shadow-sm hover:text-brand">Settings</a><span className="w-fit rounded-full bg-brand-soft px-3 py-1.5 text-xs font-bold text-brand-dark">{profileUser.accountStatus ?? "Local active"}</span></div>
           </div>
-          <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">A lightweight authenticated workspace for activity saved in this browser. Backend account sync is not active yet.</p>
+          <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">{profileUser.bio || "Add a short bio in your profile to explain what you are researching and how you like to help the community."}</p>
         </div>
       </Card>
 
@@ -61,7 +96,29 @@ export function ProfileOverview({ user, initialSection = "Overview" }: { user: A
       <div className="mt-6" role="tabpanel" aria-label={activeSection}>
         {activeSection === "Overview" && (
           <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-            <Card className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Activity</p><h2 className="mt-1 text-xl font-black text-ink">Your Valida workspace</h2><p className="mt-2 text-sm leading-6 text-slate-600">You are signed in as a frontend-only local user. Created research lasts for this tab session. Participation and community interactions remain in this browser until its storage is cleared.</p><dl className="mt-4 grid gap-2 text-xs text-slate-500 sm:grid-cols-2"><div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">User ID</dt><dd className="mt-0.5 break-all">{user.userId}</dd></div><div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Language</dt><dd className="mt-0.5">{user.preferredLanguage.toUpperCase()}</dd></div></dl></Card>
+            <div className="space-y-4">
+              <Card className="p-5 sm:p-6">
+                <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Profile</p><h2 className="mt-1 text-xl font-black text-ink">Account details</h2></div>{!editing && <Button type="button" variant="secondary" onClick={() => setEditing(true)} className="min-h-10 rounded-xl px-4 text-xs">Edit profile</Button>}</div>
+                {editing ? (
+                  <div className="mt-5 space-y-4">
+                    <div><label htmlFor="profile-display-name" className="text-xs font-bold text-slate-600">Display name</label><input id="profile-display-name" value={draftDisplayName} onChange={(event) => setDraftDisplayName(event.target.value)} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-brand/50 focus:ring-4 focus:ring-brand/10" /></div>
+                    <div><label htmlFor="profile-bio" className="text-xs font-bold text-slate-600">Bio</label><textarea id="profile-bio" value={draftBio} onChange={(event) => setDraftBio(event.target.value)} rows={4} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-brand/50 focus:ring-4 focus:ring-brand/10" placeholder="What are you researching?" /></div>
+                    <div><label htmlFor="profile-language" className="text-xs font-bold text-slate-600">Preferred language</label><select id="profile-language" value={draftLanguage} onChange={(event) => setDraftLanguage(event.target.value)} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 px-3 text-sm outline-none focus:border-brand/50 focus:ring-4 focus:ring-brand/10"><option value="en">English</option><option value="th">Thai</option><option value="my">Myanmar</option><option value="zh">Chinese</option></select></div>
+                    <div className="flex flex-wrap gap-2"><Button type="button" onClick={saveProfile} className="min-h-11 rounded-xl px-4 text-xs">Save changes</Button><Button type="button" variant="secondary" onClick={cancelEdit} className="min-h-11 rounded-xl px-4 text-xs">Cancel</Button></div>
+                  </div>
+                ) : (
+                  <dl className="mt-4 grid gap-2 text-xs text-slate-500 sm:grid-cols-2">
+                    <div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Display name</dt><dd className="mt-0.5">{profileUser.displayName}</dd></div>
+                    <div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Email</dt><dd className="mt-0.5 break-all">{profileUser.email}</dd></div>
+                    <div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Preferred language</dt><dd className="mt-0.5">{profileUser.preferredLanguage.toUpperCase()}</dd></div>
+                    <div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Join date</dt><dd className="mt-0.5">{joinDate}</dd></div>
+                    <div className="rounded-xl bg-slate-50 px-3 py-2 sm:col-span-2"><dt className="font-bold text-slate-700">User ID</dt><dd className="mt-0.5 break-all">{profileUser.userId}</dd></div>
+                  </dl>
+                )}
+                <p className={`mt-3 min-h-5 text-xs font-semibold ${feedback.includes("Could") ? "text-amber-700" : "text-emerald-700"}`} aria-live="polite">{feedback}</p>
+              </Card>
+              <Card className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Workspace</p><h2 className="mt-1 text-xl font-black text-ink">Frontend-only session</h2><p className="mt-2 text-sm leading-6 text-slate-600">Created research lasts for this tab session. Participation, settings, profile edits, and community interactions remain in this browser until storage is cleared.</p></Card>
+            </div>
             <div className="grid grid-cols-3 gap-3 lg:grid-cols-1">
               {[{ label: "Created", value: createdResearch.length }, { label: "Participated", value: participationCount }, { label: "Interested", value: interestedCount }].map((stat) => <Card key={stat.label} className="grid min-h-24 place-items-center p-3 text-center"><div><p className="text-2xl font-black text-brand-dark">{loaded ? stat.value : "–"}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-slate-400">{stat.label}</p></div></Card>)}
             </div>

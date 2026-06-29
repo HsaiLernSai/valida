@@ -32,6 +32,7 @@ export const navigationItems: NavigationItem[] = [
   { label: "My Research", href: "/my-research", icon: "file" },
   { label: "Bookmarks", href: "/bookmarks", icon: "bookmark" },
   { label: "Profile", href: "/profile", icon: "user" },
+  { label: "Settings", href: "/settings", icon: "settings" },
 ];
 
 export const feedTabs = ["For You", "Following Hashtags", "Latest"] as const;

@@ -2,6 +2,19 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.6B — User profile and settings foundation
+
+- Expanded the authenticated local user profile with display name, email, avatar placeholder, bio, preferred language, read-only user ID, join date, and local account status.
+- Added local profile editing for display name, bio, and preferred language with Save and Cancel actions.
+- Added a dedicated protected `/settings` page instead of overloading Profile.
+- Added settings sections for Account, Appearance, Language, Notifications, Privacy, Research Preferences, and Danger Zone.
+- Added local theme preference support for Light, Dark, and System modes with persisted browser-local settings.
+- Added frontend-only notification, privacy, and research-preference toggles/fields with local persistence.
+- Added Danger Zone controls for logout, clearing the local session, resetting local user data, resetting settings, and a clearly marked Delete Local Account placeholder.
+- Added Settings to authenticated desktop/mobile navigation and Profile-to-Settings navigation.
+- Preserved the existing frontend-only architecture: no backend, database, OAuth, cloud storage, external services, uploads, AI, payments, or new dependencies were added.
+- `npm run lint` and `npm run build` pass. Production build generates the dedicated `/settings` route.
+
 ## v0.6A — Frontend authentication foundation
 
 - Added frontend-only authentication UI for Login, Register, and Forgot Password.

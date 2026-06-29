@@ -11,7 +11,7 @@ export function MobileBottomNav({ onCreateResearch }: { onCreateResearch?: () =>
   const pathname = usePathname();
   const [user, setUser] = useState<AuthUser | null>(null);
   const authItems: NavigationItem[] = user
-    ? [navigationItems[4], navigationItems[5]]
+    ? [navigationItems[5], navigationItems[6]]
     : [
       { label: "Log in", mobileLabel: "Login", href: "/login", icon: "user" },
       { label: "Register", mobileLabel: "Join", href: "/register", icon: "plus" },
