@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getSiteUrl } from "@/lib/site-url";
+import { LanguageProvider } from "@/components/i18n/LanguageProvider";
 import { ThemeController } from "@/components/settings/ThemeController";
 import "./globals.css";
 
@@ -30,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><ThemeController />{children}</body>
+      <body><LanguageProvider><ThemeController />{children}</LanguageProvider></body>
     </html>
   );
 }

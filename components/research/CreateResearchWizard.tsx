@@ -137,8 +137,8 @@ export function CreateResearchWizard({ onClose, onPublish }: CreateResearchWizar
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/45 p-0 backdrop-blur-sm sm:items-center sm:p-5">
-      <div ref={dialogRef} className="flex max-h-[97dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-white/60 bg-canvas shadow-floating sm:max-h-[92vh] sm:rounded-3xl" role="dialog" aria-modal="true" aria-labelledby="wizard-title" aria-describedby="wizard-description">
-        <header className="border-b border-slate-200 bg-white px-4 py-4 sm:px-6 sm:py-5">
+      <div ref={dialogRef} className="flex max-h-[97dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-slate-200/60 bg-canvas shadow-floating sm:max-h-[92vh] sm:rounded-3xl" role="dialog" aria-modal="true" aria-labelledby="wizard-title" aria-describedby="wizard-description">
+        <header className="border-b border-slate-200 bg-surface px-4 py-4 sm:px-6 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0"><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand">Create research</p><h1 id="wizard-title" className="mt-1 truncate text-lg font-black tracking-tight text-ink">{steps[step]}</h1><p id="wizard-description" className="mt-1 text-xs text-slate-500">Step {step + 1} of {steps.length}</p></div>
             <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Close create research wizard" className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">×</button>
@@ -154,7 +154,7 @@ export function CreateResearchWizard({ onClose, onPublish }: CreateResearchWizar
           </ol>
         </header>
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 sm:px-8 sm:py-7">{stepContent}</div>
-        <footer className="safe-area-footer border-t border-slate-200 bg-white px-4 pt-3.5 sm:px-6">
+        <footer className="safe-area-footer border-t border-slate-200 bg-surface px-4 pt-3.5 sm:px-6">
           <div className="flex items-center justify-between gap-3">
           <Button variant="secondary" onClick={() => step === 0 ? onClose() : setStep((current) => current - 1)} className="min-h-11 rounded-xl px-4 py-2.5 text-xs">{step === 0 ? "Cancel" : "Back"}</Button>
           {step < steps.length - 1 ? (

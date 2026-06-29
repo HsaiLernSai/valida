@@ -86,6 +86,7 @@ export interface AuthUser {
 }
 
 export type ThemePreference = "light" | "dark" | "system";
+export type LanguageCode = "en" | "th" | "my" | "zh";
 
 export interface UserSettings {
   theme: ThemePreference;

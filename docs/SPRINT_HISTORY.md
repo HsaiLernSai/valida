@@ -121,3 +121,13 @@ This ledger records product milestones in implementation order. Labels are inter
 **Preserved:** frontend-only architecture, local persistence boundary, auth foundation, existing research/community/sharing/discovery behavior, and package dependencies.
 
 **Validation:** `npm run lint` and `npm run build` pass. Stop and wait for Product approval before opening v0.6C.
+
+## v0.6C — Localization foundation
+
+**Objective:** make Valida translation-ready by centralizing core UI strings and adding a lightweight local language runtime.
+
+**Delivered:** central translation dictionary, English fallback translations, placeholder language support for Thai/Myanmar/Chinese, client language provider, local persistence, Settings language integration, immediate UI refresh through translation hooks, and translation-key adoption across app chrome, community, auth, profile, settings, feed empty state, search, and core card actions.
+
+**Preserved:** existing authentication behavior, routing, survey logic, backend architecture, local storage boundaries, and package dependencies.
+
+**Validation:** `npm run lint` and `npm run build` pass. Stop and wait for Product approval before opening v0.6D.

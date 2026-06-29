@@ -39,7 +39,7 @@ const questionTypeLabels: Record<NativeFormQuestion["type"], string> = {
   time: "Time",
 };
 
-const inputClass = "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand/60 focus:ring-4 focus:ring-brand/10 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500";
+const inputClass = "w-full rounded-xl border border-slate-200 bg-surface px-3.5 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand/60 focus:ring-4 focus:ring-brand/10 disabled:cursor-not-allowed disabled:bg-surface disabled:text-slate-500";
 
 function hasAnswer(answer: string | string[] | undefined) {
   return Array.isArray(answer) ? answer.length > 0 : Boolean(answer?.trim());
@@ -76,7 +76,7 @@ function ReadOnlyAnswer({ question, answer }: { question: NativeFormQuestion; an
   const values = Array.isArray(answer) ? answer : answer ? [answer] : [];
 
   if (values.length === 0) {
-    return <p className="mt-3 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3.5 py-3 text-sm italic text-slate-400">No answer provided</p>;
+    return <p className="mt-3 rounded-xl border border-dashed border-slate-200 bg-surface px-3.5 py-3 text-sm italic text-slate-400">No answer provided</p>;
   }
 
   return (
@@ -110,7 +110,7 @@ function QuestionFields({ questions, answers, questionErrors, setAnswers, previe
             key={question.id}
             id={`native-question-${question.id}`}
             tabIndex={invalid ? -1 : undefined}
-            className={`min-w-0 rounded-2xl border bg-white p-4 shadow-[0_10px_28px_rgba(50,65,110,0.045)] transition sm:p-5 ${invalid ? "border-rose-300 ring-4 ring-rose-50" : "border-slate-200/90"}`}
+            className={`min-w-0 rounded-2xl border bg-surface p-4 shadow-[0_10px_28px_rgba(50,65,110,0.045)] transition sm:p-5 ${invalid ? "border-rose-300 ring-4 ring-rose-50" : "border-slate-200/90"}`}
             disabled={preview || submitted}
             aria-describedby={invalid ? errorId : undefined}
           >
@@ -157,7 +157,7 @@ function QuestionFields({ questions, answers, questionErrors, setAnswers, previe
                         : Array.isArray(answer) && answer.includes(option);
 
                       return (
-                        <label key={`${question.id}-${optionIndex}`} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-sm transition ${checked ? "border-brand/40 bg-brand-soft text-brand-dark ring-2 ring-brand/10" : "border-slate-200 bg-white text-slate-600 hover:border-brand/25 hover:bg-slate-50"} ${preview ? "cursor-default" : ""}`}>
+                        <label key={`${question.id}-${optionIndex}`} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 text-sm transition ${checked ? "border-brand/40 bg-brand-soft text-brand-dark ring-2 ring-brand/10" : "border-slate-200 bg-surface text-slate-600 hover:border-brand/25 hover:bg-brand-soft"} ${preview ? "cursor-default" : ""}`}>
                           <input
                             type={question.type === "multiple_choice" ? "radio" : "checkbox"}
                             name={question.type === "multiple_choice" ? question.id : undefined}
@@ -179,7 +179,7 @@ function QuestionFields({ questions, answers, questionErrors, setAnswers, previe
                     {[1, 2, 3, 4, 5].map((rating) => {
                       const selected = answer === String(rating);
                       return (
-                        <label key={rating} className={`flex min-h-14 cursor-pointer flex-col items-center justify-center rounded-xl border text-xs font-extrabold transition ${selected ? "border-brand/40 bg-brand-gradient text-white shadow-sm ring-2 ring-brand/10" : "border-slate-200 bg-white text-slate-500 hover:border-brand/30 hover:bg-brand-soft"} ${preview ? "cursor-default" : ""}`}>
+                        <label key={rating} className={`flex min-h-14 cursor-pointer flex-col items-center justify-center rounded-xl border text-xs font-extrabold transition ${selected ? "border-brand/40 bg-brand-gradient text-white shadow-sm ring-2 ring-brand/10" : "border-slate-200 bg-surface text-slate-500 hover:border-brand/30 hover:bg-brand-soft"} ${preview ? "cursor-default" : ""}`}>
                           <input type="radio" name={question.id} value={rating} checked={selected} onChange={() => setAnswers({ ...answers, [question.id]: String(rating) })} className="peer sr-only" />
                           <span className="rounded-md text-base peer-focus-visible:ring-4 peer-focus-visible:ring-brand/20" aria-hidden="true">★</span>
                           <span className="mt-0.5">{rating}</span>
@@ -248,7 +248,7 @@ export function NativeFormRenderer({ post, preview = false, embedded = false, su
 
   const formContent = (
     <>
-      <div className={`overflow-hidden rounded-2xl border ${submitted ? "border-blue-200 bg-blue-50/70" : "border-slate-200 bg-gradient-to-br from-white via-white to-blue-50/70"}`} role={submitted ? "status" : undefined}>
+      <div className={`overflow-hidden rounded-2xl border ${submitted ? "border-blue-200 bg-blue-50/70" : "border-slate-200 bg-gradient-to-br from-surface via-surface to-blue-50/70"}`} role={submitted ? "status" : undefined}>
         <div className="relative px-4 py-5 sm:px-6 sm:py-6">
           <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-violet-200/30 blur-3xl" aria-hidden="true" />
           <div className="relative flex items-start gap-3.5">
@@ -258,16 +258,16 @@ export function NativeFormRenderer({ post, preview = false, embedded = false, su
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand-dark">{submitted ? "Response complete" : "Valida native survey"}</p>
-                {!submitted && <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500 ring-1 ring-slate-200">Submitted in Valida</span>}
+                {!submitted && <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-bold text-slate-500 ring-1 ring-slate-200">Submitted in Valida</span>}
               </div>
               <h2 className="mt-1.5 break-words text-lg font-black tracking-[-0.025em] text-ink sm:text-xl">{submitted ? "Thank you for your response" : "Share your perspective"}</h2>
               <p className="mt-1 text-xs leading-5 text-slate-500">{submitted ? "Your answers are saved in this browser and shown below in read-only mode." : "Your feedback helps this researcher make a better-informed decision."}</p>
             </div>
           </div>
           <div className="relative mt-4 flex flex-wrap gap-2 border-t border-slate-200/70 pt-3">
-            <span className="rounded-lg bg-white/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">About {post.estimatedTime}</span>
-            <span className="rounded-lg bg-white/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">{questions.length} {questions.length === 1 ? "question" : "questions"}</span>
-            <span className="rounded-lg bg-white/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">{questions.filter((question) => question.required).length} required</span>
+            <span className="rounded-lg bg-surface/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">About {post.estimatedTime}</span>
+            <span className="rounded-lg bg-surface/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">{questions.length} {questions.length === 1 ? "question" : "questions"}</span>
+            <span className="rounded-lg bg-surface/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">{questions.filter((question) => question.required).length} required</span>
           </div>
         </div>
       </div>
@@ -290,7 +290,7 @@ export function NativeFormRenderer({ post, preview = false, embedded = false, su
             submitted={submitted}
           />
         ) : (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-9 text-center">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-surface px-5 py-9 text-center">
             <div className="mx-auto grid h-10 w-10 place-items-center rounded-2xl bg-slate-100 text-lg text-slate-400">?</div>
             <p className="mt-3 text-sm font-extrabold text-ink">No questions yet</p>
             <p className="mt-1 text-xs text-slate-500">Questions added by the creator will appear here.</p>
@@ -300,13 +300,13 @@ export function NativeFormRenderer({ post, preview = false, embedded = false, su
     </>
   );
 
-  if (preview) return <section className="mt-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-3 sm:p-4">{formContent}</section>;
+  if (preview) return <section className="mt-4 rounded-2xl border border-slate-200 bg-surface p-3 sm:p-4">{formContent}</section>;
 
   const responseForm = (
     <form onSubmit={(event) => { event.preventDefault(); handleSubmit(); }} noValidate>
       {formContent}
       {!submitted && (
-        <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 sm:flex sm:items-center sm:justify-between sm:gap-5">
+        <div className="mt-4 rounded-2xl border border-slate-200 bg-surface p-4 sm:flex sm:items-center sm:justify-between sm:gap-5">
           <div>
             <p className="text-xs font-extrabold text-ink">Ready to send?</p>
             <p className="mt-0.5 text-[11px] leading-5 text-slate-500">Review your answers before submitting. You can participate once in this browser profile.</p>
@@ -317,12 +317,12 @@ export function NativeFormRenderer({ post, preview = false, embedded = false, su
     </form>
   );
 
-  if (embedded) return <section aria-label="Valida native survey" className="rounded-card border border-slate-200/80 bg-slate-50/60 p-3 shadow-card sm:p-5">{responseForm}</section>;
+  if (embedded) return <section aria-label="Valida native survey" className="rounded-card border border-slate-200/80 bg-surface p-3 shadow-card sm:p-5">{responseForm}</section>;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-ink/40 p-0 backdrop-blur-sm sm:items-center sm:p-5" role="dialog" aria-modal="true" aria-labelledby="native-form-title">
       <div className="flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl bg-canvas shadow-floating sm:max-h-[90vh] sm:rounded-3xl">
-        <header className="flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-6">
+        <header className="flex items-start justify-between gap-4 border-b border-slate-200 bg-surface px-5 py-4 sm:px-6">
           <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Research response</p><h2 id="native-form-title" className="mt-1 truncate text-base font-extrabold text-ink">{post.title}</h2></div>
           <button type="button" onClick={onClose} aria-label="Close native form" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-xl text-slate-400 transition hover:bg-slate-100 hover:text-ink focus:outline-none focus:ring-4 focus:ring-brand/10">×</button>
         </header>

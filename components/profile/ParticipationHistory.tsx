@@ -26,7 +26,7 @@ export function ParticipationHistory() {
     <section id="participated" className="scroll-mt-24">
       <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">History</p><h1 className="mt-1 text-2xl font-black tracking-tight text-ink">Participated</h1><p className="mt-1 text-sm text-slate-500">Research you completed with this browser profile.</p></div>
       <div className="mt-5 space-y-3">
-        {!loaded && [0, 1, 2].map((item) => <div key={item} className="h-24 animate-pulse rounded-card border border-slate-200 bg-white/70" aria-hidden="true" />)}
+        {!loaded && [0, 1, 2].map((item) => <div key={item} className="h-24 animate-pulse rounded-card border border-slate-200 bg-surface/70" aria-hidden="true" />)}
         {!loaded && <p className="sr-only" role="status">Loading participation history</p>}
         {loaded && items.map(({ record, post }) => {
           const completedDate = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(record.completedAt));

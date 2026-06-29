@@ -9,7 +9,7 @@ export function ResponseSettingsStep({ data, updateData }: ResearchStepProps) {
         <legend className="text-xs font-bold text-slate-700">Response mode</legend>
         <div className="mt-2 grid gap-2.5 sm:grid-cols-2">
           {([{"value":"limited","label":"Limited responses","detail":"Stop at a specific target."},{"value":"unlimited","label":"Unlimited responses","detail":"Keep accepting useful responses."}] as const).map((option) => (
-            <button key={option.value} type="button" onClick={() => updateData({ responseMode: option.value })} className={`rounded-xl border p-3 text-left transition ${data.responseMode === option.value ? "border-brand bg-brand-soft" : "border-slate-200 bg-white"}`}><span className="text-sm font-bold text-ink">{option.label}</span><span className="mt-0.5 block text-xs text-slate-500">{option.detail}</span></button>
+            <button key={option.value} type="button" onClick={() => updateData({ responseMode: option.value })} className={`rounded-xl border p-3 text-left transition ${data.responseMode === option.value ? "border-brand bg-brand-soft" : "border-slate-200 bg-surface"}`}><span className="text-sm font-bold text-ink">{option.label}</span><span className="mt-0.5 block text-xs text-slate-500">{option.detail}</span></button>
           ))}
         </div>
       </fieldset>
@@ -20,7 +20,7 @@ export function ResponseSettingsStep({ data, updateData }: ResearchStepProps) {
         <legend className="text-xs font-bold text-slate-700">Time mode</legend>
         <div className="mt-2 grid gap-2.5 sm:grid-cols-2">
           {([{"value":"deadline","label":"Has deadline","detail":"Close on a chosen date."},{"value":"no_deadline","label":"No deadline","detail":"Keep the request open-ended."}] as const).map((option) => (
-            <button key={option.value} type="button" onClick={() => updateData({ timeMode: option.value })} className={`rounded-xl border p-3 text-left transition ${data.timeMode === option.value ? "border-brand bg-brand-soft" : "border-slate-200 bg-white"}`}><span className="text-sm font-bold text-ink">{option.label}</span><span className="mt-0.5 block text-xs text-slate-500">{option.detail}</span></button>
+            <button key={option.value} type="button" onClick={() => updateData({ timeMode: option.value })} className={`rounded-xl border p-3 text-left transition ${data.timeMode === option.value ? "border-brand bg-brand-soft" : "border-slate-200 bg-surface"}`}><span className="text-sm font-bold text-ink">{option.label}</span><span className="mt-0.5 block text-xs text-slate-500">{option.detail}</span></button>
           ))}
         </div>
       </fieldset>

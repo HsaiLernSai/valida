@@ -1,9 +1,11 @@
 "use client";
 
+import { useI18n } from "@/components/i18n/LanguageProvider";
 import { Button } from "@/components/ui/Button";
 import { clearAuthUser } from "@/lib/auth-storage";
 
 export function LogoutButton({ className = "" }: { className?: string }) {
+  const { t } = useI18n();
   return (
     <Button
       type="button"
@@ -14,7 +16,7 @@ export function LogoutButton({ className = "" }: { className?: string }) {
       }}
       className={`rounded-xl text-xs ${className}`}
     >
-      Log out
+      {t("auth.logout")}
     </Button>
   );
 }

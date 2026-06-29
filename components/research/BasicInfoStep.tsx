@@ -1,7 +1,7 @@
 import type { ResearchStepProps } from "@/lib/types";
 import { ResponseMethodStep } from "@/components/research/ResponseMethodStep";
 
-const fieldClass = "mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-brand/50 focus:ring-4 focus:ring-brand/5";
+const fieldClass = "mt-1.5 w-full rounded-xl border border-slate-200 bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-brand/50 focus:ring-4 focus:ring-brand/5";
 
 export function BasicInfoStep({ data, updateData }: ResearchStepProps) {
   return (

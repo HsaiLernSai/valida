@@ -10,20 +10,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: designTokens.colors.ink,
-        canvas: designTokens.colors.canvas,
-        surface: designTokens.colors.surface,
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        canvas: "rgb(var(--color-canvas) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        "surface-elevated": "rgb(var(--color-surface-elevated) / <alpha-value>)",
+        "surface-muted": "rgb(var(--color-surface-muted) / <alpha-value>)",
         brand: {
           DEFAULT: designTokens.colors.primary,
           dark: designTokens.colors.primaryDark,
-          soft: "#eaf1ff",
+          soft: "rgb(var(--color-brand-soft) / <alpha-value>)",
         },
         secondary: designTokens.colors.secondary,
         highlight: designTokens.colors.cyan,
         accent: {
           DEFAULT: designTokens.colors.accent,
-          soft: "#fff1e8",
+          soft: "rgb(var(--color-accent-soft) / <alpha-value>)",
         },
+        border: "rgb(var(--color-border) / <alpha-value>)",
       },
       backgroundImage: {
         "brand-gradient": designTokens.gradients.brand,

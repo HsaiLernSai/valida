@@ -10,7 +10,7 @@ export function ResearchGoalStep({ data, updateData }: ResearchStepProps) {
         {researchGoals.map((goal) => {
           const selected = data.goal === goal.value;
           return (
-            <button key={goal.value} type="button" onClick={() => updateData({ goal: goal.value })} className={`rounded-xl border p-3.5 text-left transition ${selected ? "border-brand bg-brand-soft ring-2 ring-brand/10" : "border-slate-200 bg-white hover:border-brand/30 hover:bg-slate-50"}`}>
+            <button key={goal.value} type="button" onClick={() => updateData({ goal: goal.value })} className={`rounded-xl border p-3.5 text-left transition ${selected ? "border-brand bg-brand-soft ring-2 ring-brand/10" : "border-slate-200 bg-surface hover:border-brand/30 hover:bg-surface"}`}>
               <span className={`text-sm font-bold ${selected ? "text-brand-dark" : "text-ink"}`}>{goal.value}</span>
               <span className="mt-1 block text-xs leading-5 text-slate-500">{goal.description}</span>
             </button>

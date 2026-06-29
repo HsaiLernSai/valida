@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/components/i18n/LanguageProvider";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -27,7 +28,7 @@ const emptyEngagement = (postId: string): CommunityEngagement => ({
 
 function CommentList({ comments }: { comments: CommunityComment[] }) {
   if (comments.length === 0) {
-    return <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-center"><p className="text-xs font-bold text-slate-600">No comments yet</p><p className="mt-1 text-[11px] text-slate-400">Start a thoughtful conversation about this research.</p></div>;
+    return <div className="rounded-xl border border-dashed border-slate-200 bg-surface px-4 py-5 text-center"><p className="text-xs font-bold text-slate-600">No comments yet</p><p className="mt-1 text-[11px] text-slate-400">Start a thoughtful conversation about this research.</p></div>;
   }
 
   return (
@@ -35,7 +36,7 @@ function CommentList({ comments }: { comments: CommunityComment[] }) {
       {comments.map((item) => (
         <article key={item.id} className="flex gap-2.5">
           <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-soft text-[10px] font-black text-brand-dark">{item.initials}</div>
-          <div className="min-w-0 flex-1 rounded-xl bg-slate-50 px-3 py-2.5">
+          <div className="min-w-0 flex-1 rounded-xl bg-surface px-3 py-2.5">
             <div className="flex flex-wrap items-baseline justify-between gap-2"><p className="text-xs font-extrabold text-ink">{item.author}</p><time dateTime={item.createdAt} className="text-[9px] text-slate-400">{new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(item.createdAt))}</time></div>
             <p className="mt-1 break-words text-xs leading-5 text-slate-600">{item.message}</p>
           </div>
@@ -46,6 +47,7 @@ function CommentList({ comments }: { comments: CommunityComment[] }) {
 }
 
 export function PostCard({ post, completed = false, engagement, onEngagementChange }: PostCardProps) {
+  const { t } = useI18n();
   const [commentOpen, setCommentOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
@@ -61,6 +63,7 @@ export function PostCard({ post, completed = false, engagement, onEngagementChan
     { label: "Comment", icon: "comment", count: post.commentCount + userCommentCount },
     { label: "Share", icon: "share", count: post.shareCount + currentEngagement.shareCount },
   ];
+  const reactionLabel = (label: string) => t(label === "Interested" ? "buttons.interested" : label === "Participate" ? "buttons.participate" : label === "Comment" ? "buttons.comment" : "buttons.share");
   const responseTarget = post.responseTarget ?? 0;
   const progress = responseTarget > 0 ? Math.min(100, Math.round((post.responseCount / responseTarget) * 100)) : 0;
   const participantsRemaining = Math.max(responseTarget - post.responseCount, 0);
@@ -70,7 +73,7 @@ export function PostCard({ post, completed = false, engagement, onEngagementChan
     <>
     <Card as="article" className="p-4 transition duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-soft sm:p-5">
       <div className="flex items-start gap-3">
-        <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-[11px] font-extrabold ring-4 ring-white ${post.avatarStyle}`}>{post.initials}</div>
+        <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-[11px] font-extrabold ring-4 ring-surface ${post.avatarStyle}`}>{post.initials}</div>
         <div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-x-2"><span className="text-sm font-bold text-ink">{post.author}</span><span className="text-slate-300">·</span><span className="text-xs text-slate-400">{post.time}</span></div><p className="mt-0.5 text-xs text-slate-500">{post.role}</p></div>
       </div>
       {completed && <div className="mt-3 rounded-xl border border-blue-100 bg-brand-soft px-3 py-2.5"><p className="text-xs font-extrabold text-brand-dark">✓ Completed</p><p className="mt-0.5 text-[11px] text-slate-500">You already participated. Your answers remain available in read-only mode.</p></div>}
@@ -81,14 +84,14 @@ export function PostCard({ post, completed = false, engagement, onEngagementChan
         <div className="mt-2.5 flex flex-wrap gap-x-2 gap-y-1">{post.hashtags.map((tag) => <a href={discoveryUrl({ hashtag: tag })} key={tag} className="rounded-md text-xs font-semibold text-brand transition hover:bg-brand-soft hover:text-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15">#{tag}</a>)}</div>
       </div>
       <div className="mt-4 rounded-xl border border-blue-100/70 bg-blue-50/50 p-3 sm:p-3.5">
-        <div className="flex flex-wrap items-center gap-2">{post.responseMode === "unlimited" && <Badge className="bg-white text-brand-dark ring-blue-200">Unlimited responses</Badge>}{post.timeMode === "no_deadline" ? <Badge className="bg-accent-soft text-orange-700 ring-orange-100">Open-ended</Badge> : <span className="text-xs font-bold text-orange-700">Closes on {formattedDeadline}</span>}</div>
-        <div className="mt-2.5 flex flex-wrap items-center gap-1.5 text-xs text-slate-500"><span className="mr-0.5 font-bold text-slate-700">Target audience:</span>{post.targetAudience.map((audience) => <span key={audience} className="rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-semibold text-slate-600">{audience}</span>)}</div>
+        <div className="flex flex-wrap items-center gap-2">{post.responseMode === "unlimited" && <Badge className="bg-surface text-brand-dark ring-blue-200">Unlimited responses</Badge>}{post.timeMode === "no_deadline" ? <Badge className="bg-accent-soft text-orange-700 ring-orange-100">Open-ended</Badge> : <span className="text-xs font-bold text-orange-700">Closes on {formattedDeadline}</span>}</div>
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5 text-xs text-slate-500"><span className="mr-0.5 font-bold text-slate-700">Target audience:</span>{post.targetAudience.map((audience) => <span key={audience} className="rounded-full border border-slate-200 bg-surface px-2 py-1 text-[10px] font-semibold text-slate-600">{audience}</span>)}</div>
         {post.responseMode === "limited" ? <div className="mt-2.5"><div className="flex items-center justify-between gap-3 text-xs"><span className="font-bold text-brand-dark">{post.responseCount} / {responseTarget} responses</span><span className="text-right text-slate-500">{participantsRemaining > 0 ? `Need ${participantsRemaining} more` : "Target reached"}</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-blue-100" aria-label={`${progress}% of responses collected`} role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-brand-gradient" style={{ width: `${progress}%` }} /></div></div> : <p className="mt-2.5 text-xs font-bold text-brand-dark">{post.responseCount} responses collected</p>}
-        <div className="mt-3 flex justify-end"><a href={`/research/${post.id}`} className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-brand-gradient px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20">{completed ? "View Research" : "Open Research"} <Icon name="arrow" className="h-3.5 w-3.5" /></a></div>
+        <div className="mt-3 flex justify-end"><a href={`/research/${post.id}`} className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-brand-gradient px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20">{completed ? t("buttons.viewResearch") : t("buttons.openResearch")} <Icon name="arrow" className="h-3.5 w-3.5" /></a></div>
       </div>
       <div className="mt-3 grid grid-cols-4 border-t border-slate-100 pt-2">
         {reactions.map((reaction) => reaction.label === "Participate" ? (
-          <a href={`/research/${post.id}`} key={reaction.label} aria-label={`${completed ? "View Research" : "Participate"}: ${reaction.count}`} className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg py-2.5 text-slate-500 transition hover:bg-brand-soft hover:text-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15"><Icon name={completed ? "file" : "support"} className="h-4 w-4 shrink-0" /><span className="hidden text-[11px] font-bold sm:inline">{completed ? "View" : "Participate"}</span><span className="text-[11px] font-medium">{reaction.count}</span></a>
+          <a href={`/research/${post.id}`} key={reaction.label} aria-label={`${completed ? t("buttons.viewResearch") : t("buttons.participate")}: ${reaction.count}`} className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg py-2.5 text-slate-500 transition hover:bg-brand-soft hover:text-brand-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/15"><Icon name={completed ? "file" : "support"} className="h-4 w-4 shrink-0" /><span className="hidden text-[11px] font-bold sm:inline">{completed ? t("buttons.viewResearch") : t("buttons.participate")}</span><span className="text-[11px] font-medium">{reaction.count}</span></a>
         ) : (
           <Button variant="ghost" key={reaction.label} disabled={reaction.label === "Interested" && interestPending} aria-pressed={reaction.label === "Interested" ? currentEngagement.interested : undefined} onClick={() => {
             if (reaction.label === "Interested") {
@@ -98,8 +101,8 @@ export function PostCard({ post, completed = false, engagement, onEngagementChan
             }
             if (reaction.label === "Comment") { setCommentOpen((current) => !current); setFeedback(""); }
             if (reaction.label === "Share") { setShareDialogOpen(true); setCommentOpen(false); setFeedback(""); }
-          }} aria-label={`${reaction.label}: ${reaction.count}`} className={`group min-w-0 gap-1.5 rounded-lg py-2.5 transition active:scale-95 ${reaction.label === "Interested" && currentEngagement.interested ? "bg-brand-soft text-brand-dark" : "text-slate-500"}`}>
-            <Icon name={reaction.icon} filled={reaction.label === "Interested" && currentEngagement.interested} className={`h-4 w-4 shrink-0 transition ${reaction.label === "Interested" && currentEngagement.interested ? "scale-110" : ""}`} /><span className="hidden text-[11px] sm:inline">{reaction.label}</span><span className="text-[11px] font-medium">{reaction.count}</span>
+          }} aria-label={`${reactionLabel(reaction.label)}: ${reaction.count}`} className={`group min-w-0 gap-1.5 rounded-lg py-2.5 transition active:scale-95 ${reaction.label === "Interested" && currentEngagement.interested ? "bg-brand-soft text-brand-dark" : "text-slate-500"}`}>
+            <Icon name={reaction.icon} filled={reaction.label === "Interested" && currentEngagement.interested} className={`h-4 w-4 shrink-0 transition ${reaction.label === "Interested" && currentEngagement.interested ? "scale-110" : ""}`} /><span className="hidden text-[11px] sm:inline">{reactionLabel(reaction.label)}</span><span className="text-[11px] font-medium">{reaction.count}</span>
           </Button>
         ))}
       </div>

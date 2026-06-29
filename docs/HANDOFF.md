@@ -9,8 +9,8 @@ The project remains intentionally frontend-only. There is no backend, database, 
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** v0.6B — User profile and settings foundation
-- **Sprint state:** implementation complete; stop and wait for Product approval before opening v0.6C.
+- **Product iteration:** v0.6C — Localization foundation
+- **Sprint state:** implementation complete; stop and wait for Product approval before opening v0.6D.
 - **Validation:** `npm run lint` and `npm run build` pass with no new dependencies.
 - **Architecture boundary:** local browser session/settings only; no backend, database, OAuth, cloud storage, or external service was introduced.
 
@@ -36,6 +36,7 @@ The project remains intentionally frontend-only. There is no backend, database, 
 - Community engagement state: browser-local storage through `lib/community-storage.ts`.
 - Frontend auth session: `localStorage` through `lib/auth-storage.ts`.
 - User settings/theme/preferences: `localStorage` through `lib/user-settings.ts`.
+- Localization runtime: `components/i18n/LanguageProvider.tsx` using dictionaries from `lib/i18n.ts`.
 
 ## Completed sprint history
 
@@ -54,6 +55,7 @@ The project remains intentionally frontend-only. There is no backend, database, 
 - **v0.5C — Community discovery:** Explore page, search/filtering, clickable hashtags, categories, trending/sidebar navigation.
 - **v0.6A — Frontend authentication foundation:** Login/Register/Forgot Password UI, local session state, logout, protected routes, auth-aware navigation.
 - **v0.6B — User profile and settings foundation:** production-ready local profile details/editing, dedicated Settings page, persisted theme/settings/preferences, authenticated Settings navigation.
+- **v0.6C — Localization foundation:** central translation dictionary, lightweight language provider, Settings language integration, local language persistence, and translation keys across core app chrome/community/auth/profile/settings surfaces.
 
 ## Current implementation status
 
@@ -76,6 +78,10 @@ Working:
 - Persisted local settings for theme, notifications, privacy, and research defaults.
 - Light/Dark/System theme preference.
 - Local account controls and clearly marked placeholders for backend-only actions.
+- Localization provider and translation hook.
+- English fallback dictionary.
+- Placeholder language selection for Thai, Myanmar, and Chinese.
+- Settings language selector updates the interface immediately and survives refresh.
 
 Still intentionally limited:
 
@@ -88,6 +94,8 @@ Still intentionally limited:
 - Forgot Password and Change Password are placeholders only.
 - Delete Local Account is a placeholder until real backend accounts exist.
 - Settings do not yet drive backend behavior, notification delivery, real privacy visibility, or Create Research defaults.
+- Thai, Myanmar, and Chinese are selectable placeholder languages; untranslated keys intentionally fall back to English.
+- Static metadata and some long-form research/mock-content copy remain English until a later full content-translation sprint.
 
 ## Current git status
 
@@ -133,9 +141,9 @@ No dependency install was performed. `package.json` and `package-lock.json` were
 
 ## Sprint lock policy
 
-- v0.6B is complete after implementation, changelog, handoff, lint, and production build.
-- Stop implementation after v0.6B.
-- Do not open v0.6C without Product approval.
+- v0.6C is complete after implementation, changelog, handoff, lint, and production build.
+- Stop implementation after v0.6C.
+- Do not open v0.6D without Product approval.
 - Do not add dependencies without approval.
 - Do not change architecture without approval.
 - Do not introduce backend, database, OAuth, cloud storage, external services, uploads, analytics, AI, credits, payments, or admin features without explicit locked scope.
@@ -148,22 +156,22 @@ No dependency install was performed. `package.json` and `package-lock.json` were
 - **Phase 3 — Profiles/personal organization:** local authenticated profile/settings foundation complete; future work includes real backend profile sync, avatar upload, bookmarks, cross-device history, and account settings.
 - **Phase 4 — Sharing/discovery:** static/frontend MVP complete; future work includes server-backed public links, collections, embeds, and richer social previews.
 - **Phase 5 — Research operations:** not started; future work includes creator dashboard, analytics, response management, notifications, and moderation.
-- **Phase 6 — Language/media/advanced feedback:** not started; future work includes localization, auto-translation, uploads, and annotation.
+- **Phase 6 — Language/media/advanced feedback:** localization foundation started; future work includes real translations, auto-translation, uploads, and annotation.
 - **Phase 7 — Intelligence/incentives:** not started; future work includes AI assistance, summaries, credits, rewards, and paid research flows.
 - **Phase 8 — Backend platform:** not started; future work includes real auth, database, authorization, storage, jobs, observability, backups, and billing.
 
-## Next sprint v0.6C readiness
+## Next sprint v0.6D readiness
 
-v0.6C is not open.
+v0.6D is not open.
 
-Before v0.6C, Product should decide whether the next sprint remains frontend-only or begins backend/auth architecture planning. If v0.6C touches real authentication, database persistence, email, OAuth, server APIs, cloud storage, external services, or testing frameworks, those items must be explicitly approved in the locked scope.
+Before v0.6D, Product should decide whether the next sprint remains frontend-only or begins backend/auth architecture planning. If v0.6D touches real authentication, database persistence, email, OAuth, server APIs, cloud storage, external services, or testing frameworks, those items must be explicitly approved in the locked scope.
 
-Recommended Product decisions before v0.6C:
+Recommended Product decisions before v0.6D:
 
 1. Decide whether backend authentication architecture planning begins next.
 2. Decide whether local settings should drive Create Research defaults.
-3. Decide whether bookmarks become real storage-backed functionality.
-4. Decide whether public profile visibility remains local-only or waits for backend.
+3. Decide whether full Thai/Myanmar/Chinese copywriting is approved.
+4. Decide whether bookmarks become real storage-backed functionality.
 5. Decide whether automated tests are approved and whether dependencies/frameworks may be added.
 
 Stop here until Product approves the next locked sprint.

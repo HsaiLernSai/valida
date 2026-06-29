@@ -2,6 +2,17 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.6C — Localization foundation
+
+- Added a central localization dictionary with scalable module-based keys for app chrome, navigation, community, authentication, profile, settings, buttons, search, and language labels.
+- Added a lightweight client language provider and translation hook.
+- Added supported language options for English, Thai, Myanmar, and Chinese, with English as the complete fallback language.
+- Connected Settings → Preferred Language to the language manager so language selection updates the interface immediately and persists locally.
+- Persisted language through the existing frontend-only local user/settings layer without backend sync, API integration, or database changes.
+- Converted shared app chrome and core visible UI surfaces to translation keys, including navigation, Community header/tabs/search, auth forms, profile shell/details, settings, feed empty state, and primary card action labels.
+- Preserved existing routing, authentication flow, survey logic, backend architecture, and package dependencies.
+- `npm run lint` and `npm run build` pass.
+
 ## v0.6B — User profile and settings foundation
 
 - Expanded the authenticated local user profile with display name, email, avatar placeholder, bio, preferred language, read-only user ID, join date, and local account status.

@@ -4,6 +4,14 @@
 
 :root {
   color-scheme: light;
+  --color-ink: 23 32 51;
+  --color-canvas: 247 248 252;
+  --color-surface: 255 255 255;
+  --color-surface-elevated: 255 255 255;
+  --color-surface-muted: 241 245 249;
+  --color-border: 226 232 240;
+  --color-brand-soft: 234 241 255;
+  --color-accent-soft: 255 241 232;
 }
 
 * {
@@ -17,19 +25,27 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  color: #172033;
-  background: #f6f8fc;
+  color: rgb(var(--color-ink));
+  background: rgb(var(--color-canvas));
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 }
 
 .valida-dark {
   color-scheme: dark;
+  --color-ink: 248 250 252;
+  --color-canvas: 8 17 31;
+  --color-surface: 18 32 58;
+  --color-surface-elevated: 25 42 70;
+  --color-surface-muted: 26 42 70;
+  --color-border: 96 125 159;
+  --color-brand-soft: 37 99 235;
+  --color-accent-soft: 146 64 14;
 }
 
 .valida-dark body {
-  color: #f8fafc;
-  background: #08111f;
+  color: rgb(var(--color-ink));
+  background: rgb(var(--color-canvas));
 }
 
 .valida-dark .bg-app-gradient {
@@ -38,31 +54,14 @@ body {
     linear-gradient(135deg, #08111f 0%, #0d1729 48%, #111936 100%);
 }
 
-.valida-dark .bg-white,
-.valida-dark .bg-white\/70,
-.valida-dark .bg-white\/80,
-.valida-dark .bg-white\/85,
-.valida-dark .bg-white\/90,
-.valida-dark .bg-white\/95,
-.valida-dark .bg-canvas,
-.valida-dark .bg-canvas\/90,
-.valida-dark .bg-canvas\/95 {
-  background-color: rgb(15 27 48 / 0.92);
-}
-
-.valida-dark .bg-surface {
-  background-color: #12203a;
-}
-
 .valida-dark .shadow-card,
 .valida-dark .shadow-soft,
 .valida-dark .shadow-floating {
   box-shadow: 0 22px 60px rgb(0 0 0 / 0.32);
 }
 
-.valida-dark .bg-slate-50,
 .valida-dark .bg-slate-100 {
-  background-color: #1a2a46;
+  background-color: rgb(var(--color-surface-muted));
 }
 
 .valida-dark .bg-blue-50,
@@ -72,12 +71,12 @@ body {
 }
 
 .valida-dark .bg-brand-soft {
-  background-color: rgb(37 99 235 / 0.24);
+  background-color: rgb(var(--color-brand-soft) / 0.24);
 }
 
 .valida-dark .bg-accent-soft,
 .valida-dark .bg-amber-50 {
-  background-color: rgb(146 64 14 / 0.28);
+  background-color: rgb(var(--color-accent-soft) / 0.28);
 }
 
 .valida-dark .bg-emerald-50 {
@@ -97,7 +96,7 @@ body {
 }
 
 .valida-dark .text-ink {
-  color: #f8fafc;
+  color: rgb(var(--color-ink));
 }
 
 .valida-dark .text-slate-700,
@@ -141,10 +140,8 @@ body {
 .valida-dark .border-slate-200,
 .valida-dark .border-slate-200\/70,
 .valida-dark .border-slate-200\/80,
-.valida-dark .border-slate-100,
-.valida-dark .border-white\/70,
-.valida-dark .border-white\/80 {
-  border-color: rgb(96 125 159 / 0.55);
+.valida-dark .border-slate-100 {
+  border-color: rgb(var(--color-border) / 0.55);
 }
 
 .valida-dark .border-blue-100,
@@ -163,9 +160,9 @@ body {
 .valida-dark input,
 .valida-dark textarea,
 .valida-dark select {
-  color: #f8fafc;
-  background-color: #0f1b31;
-  border-color: rgb(96 125 159 / 0.72);
+  color: rgb(var(--color-ink));
+  background-color: rgb(var(--color-surface-elevated));
+  border-color: rgb(var(--color-border) / 0.72);
 }
 
 .valida-dark input::placeholder,
@@ -185,29 +182,18 @@ body {
 .valida-dark textarea:disabled,
 .valida-dark select:disabled {
   color: #b8c5d8;
-  background-color: #17243c;
+  background-color: rgb(var(--color-surface-muted));
   border-color: rgb(71 85 105 / 0.8);
 }
 
 .valida-dark button.border,
-.valida-dark a.border,
-.valida-dark .border.bg-white,
-.valida-dark .border.bg-slate-50 {
-  border-color: rgb(96 125 159 / 0.62);
+.valida-dark a.border {
+  border-color: rgb(var(--color-border) / 0.62);
 }
 
-.valida-dark button.bg-white,
-.valida-dark a.bg-white,
-.valida-dark .bg-white.text-ink {
-  color: #f8fafc;
-  background-color: #17243c;
-}
-
-.valida-dark .hover\:bg-white:hover,
-.valida-dark .hover\:bg-slate-50:hover,
 .valida-dark .hover\:bg-slate-100:hover {
-  color: #f8fafc;
-  background-color: #203251;
+  color: rgb(var(--color-ink));
+  background-color: rgb(var(--color-surface-muted));
 }
 
 .valida-dark .hover\:bg-brand-soft:hover {
@@ -245,27 +231,13 @@ body {
 }
 
 .valida-dark header.bg-canvas\/90 {
-  background-color: rgb(15 27 48 / 0.96);
+  background-color: rgb(var(--color-surface) / 0.96);
   border-color: rgb(96 125 159 / 0.6);
   box-shadow: 0 14px 34px rgb(0 0 0 / 0.22);
 }
 
 .valida-dark header.bg-canvas\/90 input {
   background-color: transparent;
-}
-
-.valida-dark label.bg-white {
-  background-color: #12203a;
-  border-color: rgb(96 125 159 / 0.68);
-}
-
-.valida-dark label.bg-white:focus-within {
-  border-color: #93c5fd;
-  box-shadow: 0 0 0 4px rgb(147 197 253 / 0.16);
-}
-
-.valida-dark aside.bg-white\/70 {
-  background-color: rgb(15 27 48 / 0.94);
 }
 
 .valida-dark aside .mt-auto {
