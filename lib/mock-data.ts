@@ -29,8 +29,8 @@ export const navigationItems: NavigationItem[] = [
   { label: "Home", href: "/", icon: "home" },
   { label: "Explore", href: "/explore", icon: "compass" },
   { label: "New Research", mobileLabel: "New Research", href: "#", icon: "plus" },
-  { label: "My Research", href: "/profile#created", icon: "file" },
-  { label: "Bookmarks", href: "/profile#bookmarks", icon: "bookmark" },
+  { label: "My Research", href: "/my-research", icon: "file" },
+  { label: "Bookmarks", href: "/bookmarks", icon: "bookmark" },
   { label: "Profile", href: "/profile", icon: "user" },
 ];
 

@@ -2,6 +2,18 @@
 
 The npm package remains `0.1.0`; the product labels below describe prototype milestones rather than published semantic-version releases.
 
+## v0.6A — Frontend authentication foundation
+
+- Added frontend-only authentication UI for Login, Register, and Forgot Password.
+- Added local session state for a minimal user model: `userId`, `displayName`, `email`, `avatar`, `preferredLanguage`, and `createdAt`.
+- Added logout behavior that clears the local Valida session and returns the user to Login.
+- Protected Profile, My Research, Participation, and Bookmarks with client-side route guards that redirect guests to Login.
+- Added dedicated authenticated routes for `/my-research`, `/participation`, and `/bookmarks` while preserving the existing lightweight Profile sections.
+- Updated desktop and mobile navigation to show Profile/My Research/Bookmarks for signed-in users and Login/Register for guests.
+- Reframed Profile copy from anonymous browser-local profile to signed-in local session while preserving the frontend-only storage boundary.
+- Preserved the existing frontend-only architecture: no backend, database, OAuth provider, email verification, profile editing, uploads, AI, analytics, or new dependencies were added.
+- `npm run lint` and `npm run build` pass. Production build generates `/login`, `/register`, `/forgot-password`, `/profile`, `/my-research`, `/participation`, and `/bookmarks`.
+
 ## v0.5B — Static research sharing
 
 - Replaced the inline share controls with an accessible, responsive Share Research dialog used by feed cards and Research Detail.

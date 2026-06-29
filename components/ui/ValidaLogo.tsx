@@ -10,7 +10,7 @@ export function ValidaLogo({ variant = "compact", className = "" }: ValidaLogoPr
   const isFull = variant === "full";
 
   return (
-    <a href="#" aria-label="Valida home" className={`inline-flex items-center gap-2.5 ${className}`}>
+    <a href="/" aria-label="Valida home" className={`inline-flex items-center gap-2.5 ${className}`}>
       <span className={`grid shrink-0 place-items-center bg-brand-gradient font-extrabold text-white shadow-sm ${isFull ? "h-10 w-10 rounded-[13px] text-lg" : "h-9 w-9 rounded-xl text-base"}`}>
         <span className="-translate-y-px tracking-[-0.08em]">V</span>
       </span>

@@ -6,10 +6,10 @@ import { Card } from "@/components/ui/Card";
 import { getCommunityEngagements } from "@/lib/community-storage";
 import { getParticipationHistory } from "@/lib/participation-storage";
 import { getSessionResearchPosts } from "@/lib/research-storage";
-import type { ResearchPost } from "@/lib/types";
+import type { AuthUser, ResearchPost } from "@/lib/types";
 
 const profileSections = ["Overview", "My Research", "Participation", "Bookmarks", "Credits"] as const;
-type ProfileSection = typeof profileSections[number];
+export type ProfileSection = typeof profileSections[number];
 
 const sectionFromHash: Record<string, ProfileSection> = {
   "#created": "My Research",
@@ -18,8 +18,8 @@ const sectionFromHash: Record<string, ProfileSection> = {
   "#credits": "Credits",
 };
 
-export function ProfileOverview() {
-  const [activeSection, setActiveSection] = useState<ProfileSection>("Overview");
+export function ProfileOverview({ user, initialSection = "Overview" }: { user: AuthUser; initialSection?: ProfileSection }) {
+  const [activeSection, setActiveSection] = useState<ProfileSection>(initialSection);
   const [createdResearch, setCreatedResearch] = useState<ResearchPost[]>([]);
   const [participationCount, setParticipationCount] = useState(0);
   const [interestedCount, setInterestedCount] = useState(0);
@@ -29,9 +29,9 @@ export function ProfileOverview() {
     setCreatedResearch(getSessionResearchPosts());
     setParticipationCount(getParticipationHistory().length);
     setInterestedCount(getCommunityEngagements().filter((item) => item.interested).length);
-    setActiveSection(sectionFromHash[window.location.hash] ?? "Overview");
+    setActiveSection(sectionFromHash[window.location.hash] ?? initialSection);
     setLoaded(true);
-  }, []);
+  }, [initialSection]);
 
   const selectSection = (section: ProfileSection) => {
     setActiveSection(section);
@@ -45,10 +45,10 @@ export function ProfileOverview() {
         <div className="h-24 bg-brand-gradient sm:h-28" />
         <div className="px-5 pb-5 sm:px-7 sm:pb-7">
           <div className="-mt-10 flex flex-col gap-4 sm:-mt-11 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex items-end gap-4"><div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl border-4 border-white bg-gradient-to-br from-blue-200 to-violet-300 text-xl font-black text-indigo-900 shadow-soft sm:h-24 sm:w-24">YU</div><div className="pb-1"><h1 className="text-2xl font-black tracking-tight text-ink">Your profile</h1><p className="mt-0.5 text-sm font-semibold text-slate-500">Research creator · Community member</p></div></div>
-            <span className="w-fit rounded-full bg-brand-soft px-3 py-1.5 text-xs font-bold text-brand-dark">Browser-local profile</span>
+            <div className="flex items-end gap-4"><div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl border-4 border-white bg-gradient-to-br from-blue-200 to-violet-300 text-xl font-black text-indigo-900 shadow-soft sm:h-24 sm:w-24">{user.avatar}</div><div className="pb-1"><h1 className="text-2xl font-black tracking-tight text-ink">{user.displayName}</h1><p className="mt-0.5 text-sm font-semibold text-slate-500">{user.email}</p></div></div>
+            <span className="w-fit rounded-full bg-brand-soft px-3 py-1.5 text-xs font-bold text-brand-dark">Signed-in local session</span>
           </div>
-          <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">A lightweight summary of research activity saved in this browser.</p>
+          <p className="mt-5 max-w-2xl text-sm leading-6 text-slate-600">A lightweight authenticated workspace for activity saved in this browser. Backend account sync is not active yet.</p>
         </div>
       </Card>
 
@@ -61,7 +61,7 @@ export function ProfileOverview() {
       <div className="mt-6" role="tabpanel" aria-label={activeSection}>
         {activeSection === "Overview" && (
           <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-            <Card className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Activity</p><h2 className="mt-1 text-xl font-black text-ink">Your Valida workspace</h2><p className="mt-2 text-sm leading-6 text-slate-600">Created research lasts for this tab session. Participation and community interactions remain in this browser until its storage is cleared.</p></Card>
+            <Card className="p-5 sm:p-6"><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">Activity</p><h2 className="mt-1 text-xl font-black text-ink">Your Valida workspace</h2><p className="mt-2 text-sm leading-6 text-slate-600">You are signed in as a frontend-only local user. Created research lasts for this tab session. Participation and community interactions remain in this browser until its storage is cleared.</p><dl className="mt-4 grid gap-2 text-xs text-slate-500 sm:grid-cols-2"><div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">User ID</dt><dd className="mt-0.5 break-all">{user.userId}</dd></div><div className="rounded-xl bg-slate-50 px-3 py-2"><dt className="font-bold text-slate-700">Language</dt><dd className="mt-0.5">{user.preferredLanguage.toUpperCase()}</dd></div></dl></Card>
             <div className="grid grid-cols-3 gap-3 lg:grid-cols-1">
               {[{ label: "Created", value: createdResearch.length }, { label: "Participated", value: participationCount }, { label: "Interested", value: interestedCount }].map((stat) => <Card key={stat.label} className="grid min-h-24 place-items-center p-3 text-center"><div><p className="text-2xl font-black text-brand-dark">{loaded ? stat.value : "–"}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-slate-400">{stat.label}</p></div></Card>)}
             </div>

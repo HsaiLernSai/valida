@@ -73,6 +73,15 @@ export interface CommunityComment {
   createdAt: string;
 }
 
+export interface AuthUser {
+  userId: string;
+  displayName: string;
+  email: string;
+  avatar: string;
+  preferredLanguage: string;
+  createdAt: string;
+}
+
 export type FeedView = "For You" | "Following Hashtags" | "Latest";
 
 export interface ResearchWizardData {

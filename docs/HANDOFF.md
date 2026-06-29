@@ -1,96 +1,180 @@
-# Valida Handoff
+# Valida Engineering Handoff
 
-## Project summary
+## Project overview
 
-Valida is a frontend-only research community prototype built with Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, and ESLint. Users can browse structured research requests, create an external or native request through a six-step wizard, open a full detail route, submit a native form once in the current browser profile, and revisit completed research through Profile → Participated.
+Valida is a frontend-only research community prototype built with Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, and ESLint. Users can browse and discover research, create browser-session research, open full research detail routes, participate through native or external forms, interact with community cards, share static public research routes, and now sign in to a frontend-only local session.
 
-The repository contains no backend, database, authentication, Supabase client, API persistence, payments, or real account identity.
+The project remains intentionally frontend-only. There is still no backend, database, Supabase client, OAuth provider, email delivery, payment layer, upload pipeline, or authoritative account system.
 
 ## Current sprint
 
 - **Package version:** `0.1.0`
-- **Product iteration:** v0.5B — Static research sharing
-- **Sprint state:** implementation, lint, production-build, and QR matrix gates pass with no new dependencies.
-- **Objective:** complete manual device/share/QR scan sign-off for static public research routes.
+- **Product iteration:** v0.6A — Frontend authentication foundation
+- **Sprint state:** implementation complete; stop and wait for Product approval before opening v0.6B.
+- **Validation:** `npm run lint` and `npm run build` pass with no new dependencies.
+- **Architecture boundary:** local browser session only; no backend/database/auth provider was introduced.
 
-## Completed work
+## Current architecture
 
-- Responsive compact community shell with left navigation, sticky feed header, right discovery rail, mobile navigation, and shared creation triggers.
-- Five mock requests with six supported goals, multiple audiences, hashtags, estimated time, limited/unlimited capacity, and deadline/open-ended state.
-- Research cards with progress/status, internal detail CTA, visual action counts, and completed/View Research behavior.
-- Six-step Create Research Wizard with separate step components and session publish.
-- External-form link choice plus Google Forms, Microsoft Forms, Typeform, and generic URL compatibility.
-- Professional native form builder/renderer for short text, paragraph, multiple choice, checkbox, rating, dropdown, number, email, phone, date, and time.
-- Required-field validation, native submission, browser-local duplicate prevention, submitted success, read-only revisit, and local detail count increment.
-- Dynamic `/research/[id]` detail route and `/profile` participation-history route.
-- Blue/purple design system, restrained orange accent, CSS-only Valida logo, UI primitives, design tokens, typed mock/default data, and storage helper.
-- Full project status, feature matrix, roadmap, sprint history, immediate tasks, product blueprint, models, architecture, UI guide, changelog, backlog, deployment, responsive, and development documentation.
-- Final validation on June 28, 2026: `npm run lint` passed with no warnings/errors and `npm run build` generated `/`, `/profile`, and `/research/[id]` successfully.
-- Client Storage Foundation validation on June 29, 2026: lint passed cleanly, the production build generated all preserved routes, and the development server returned HTTP 200 for `/`.
-- Product Planning Documentation v0.4 validation on June 29, 2026: lint and production build passed; the sprint changed documentation only.
-- v0.4A professionalized the builder, survey renderer, success/read-only states, and detail presentation.
-- v0.4B added seven rich types while preserving the string/string-array answer contract and schema-v1 storage.
-- v0.4C added wizard focus containment, responsive/safe-area polish, duplicate-option validation, loading/empty/error states, and shared accessibility treatment.
-- v0.4D fixed external HTTP/HTTPS link validation and custom-control focus visibility; lint and production build passed on June 29, 2026.
+- Runtime: Next.js 14.2 App Router, React 18, TypeScript, Tailwind CSS, ESLint.
+- Routes:
+  - `/` — Community feed and Create Research entry point.
+  - `/explore` — Community discovery/search/filtering.
+  - `/research/[id]` — Research detail and participation.
+  - `/login` — frontend-only login.
+  - `/register` — frontend-only registration.
+  - `/forgot-password` — UI-only password recovery placeholder.
+  - `/profile` — protected authenticated local profile.
+  - `/my-research` — protected My Research section.
+  - `/participation` — protected Participation section.
+  - `/bookmarks` — protected Bookmarks section.
+  - `/robots.txt` and `/sitemap.xml` — framework-native metadata routes.
+- Static research catalog: `lib/mock-data.ts`.
+- Session-created research: `sessionStorage` through `lib/research-storage.ts`.
+- Participation history: `localStorage` through `lib/participation-storage.ts`.
+- Community engagement state: browser-local storage through `lib/community-storage.ts`.
+- Frontend auth session: `localStorage` through `lib/auth-storage.ts`.
 
-## Current issues
+## Authentication foundation status
 
-1. `valida:session-posts` and `valida:participation-history` intentionally have different lifetimes. History can outlive a session-created post and then shows a graceful unavailable fallback.
-2. Browser-local duplicate prevention is not “one account = one submission”; there are no accounts.
-3. Search, bookmarks, and Explore remain incomplete. Community tabs/interactions and static research sharing are browser-functional.
-4. External form completion is explicitly unverified and must stay that way until a real integration exists.
-5. Target/deadline states do not automatically close research.
-6. No automated unit/integration/end-to-end suite exists. Wizard focus trapping/restoration is implemented but still needs manual assistive-technology/browser sign-off.
-7. The cloud-synced workspace can generate duplicate files with ` 2` suffixes, including stale Markdown copies. Unsuffixed files are canonical; TypeScript excludes duplicate `.ts`/`.tsx`. Do not edit suffix copies or delete sync artifacts casually.
-8. The Vercel production URL is not recorded in the repository, so anonymous production access could not be verified during v0.5A.
-9. Newly created research remains session-local and is intentionally not publicly shareable; real public sharing requires future server persistence.
+Sprint v0.6A added a minimal architecture-ready user model:
 
-## Next priorities
+- `userId`
+- `displayName`
+- `email`
+- `avatar`
+- `preferredLanguage`
+- `createdAt`
 
-1. Manually test Create Research end-to-end with all 11 native question types, validation, preview, and publish.
-2. Verify submit, duplicate prevention, completed/read-only revisit, Profile History, response-count sync, and refresh persistence.
-3. Verify mobile layouts, keyboard/safe-area behavior, and external links; record the outcome before commit/push.
+The auth flow is intentionally local:
 
-The release checklist and current verification boundary are recorded in `PROJECT_STATUS.md`; the older `NEXT_TASK.md` implementation plan is historical until it is deliberately replaced.
+- Login creates/saves a local session from the submitted email.
+- Register creates/saves a local session with display name and email.
+- Forgot Password is UI-only and explicitly says backend email reset is not active.
+- Logout clears the local auth session and returns to Login.
+- Guests attempting to open `/profile`, `/my-research`, `/participation`, or `/bookmarks` are redirected to `/login?next=...`.
+- Desktop and mobile navigation reflect signed-in versus signed-out state.
 
-## Recommended first task
+Important: this is not secure production authentication. It is a frontend session foundation that future backend/auth work can replace or connect to.
 
-Start with the manual v0.4 release checklist in `PROJECT_STATUS.md` under Remaining Testing. Do not begin another feature sprint or describe v0.4 as browser-verified until that pass succeeds.
+## Completed sprint history
 
-## Files to read first
+- **v0.1 — Community/product foundation:** Next.js/Tailwind foundation, compact research community layout, mock feed, mobile navigation, shared UI primitives, design system.
+- **v0.1 — Create Research/native form MVP:** six-step wizard, native/external response choice, basic native form builder, session publishing.
+- **v0.1 — Research Detail:** `/research/[id]`, metadata, native/external participation, local response increment.
+- **v0.2 — Native Form UX and participation continuity:** multi-audience tags, duplicate local submission prevention, completed state, read-only revisit, Profile Participation History.
+- **v0.3 — Client Storage Foundation:** versioned browser storage, runtime guards, safe parsing, session research and participation adapters.
+- **v0.4 — Product planning documentation:** feature matrix, roadmap, sprint history, status, backlog, handoff structure.
+- **v0.4A — Professional Native Survey UI:** polished builder/renderer/detail UI.
+- **v0.4B — Rich Native Question Types:** 11 native question types while preserving answer/storage shape.
+- **v0.4C — Professional UX polish:** wizard focus, validation, loading/empty/error states, mobile/safe-area polish.
+- **v0.4D — Final Release QA:** release-blocker fixes, HTTP/HTTPS external-link validation, lint/build pass.
+- **v0.5A — MVP stabilization:** mobile Profile access, functional tabs, community interactions, profile sections, SEO metadata.
+- **v0.5B — Static research sharing:** Share dialog, Copy Link, native share, dependency-free QR for static research routes.
+- **v0.5C — Community discovery:** Explore page, search/filtering, clickable hashtags, categories, trending/sidebar navigation.
+- **v0.6A — Frontend authentication foundation:** Login/Register/Forgot Password UI, local session state, logout, protected routes, auth-aware navigation.
 
-1. `docs/FEATURE_MATRIX.md` — authoritative implemented/next/planned/future boundaries.
-2. `docs/PROJECT_STATUS.md` and `docs/SPRINT_HISTORY.md` — release status, remaining QA, and milestone sequence.
-3. `docs/CHANGELOG.md` — v0.4A–v0.4D implementation and validation record.
-4. `docs/DEVELOPMENT_RULES.md` — scope and quality guardrails.
-5. `lib/types.ts` and `lib/research-defaults.ts` — native survey contracts/defaults.
-6. `components/research/CreateResearchWizard.tsx`, `NativeFormBuilder.tsx`, `NativeFormRenderer.tsx`, and `PreviewPublishStep.tsx` — v0.4 release surface.
-7. `lib/browser-storage.ts`, `lib/research-storage.ts`, and `lib/participation-storage.ts` — stable versioned browser-state contract.
+## Current implementation status
 
-Use `COMPONENT_ARCHITECTURE.md`, `DATABASE.md`, and `UI_GUIDELINES.md` as references rather than inferring intended boundaries from markup.
+Working:
 
-## Developer notes
+- Community feed and discovery.
+- Functional feed tabs.
+- `/explore` search and filters.
+- Research cards and detail pages.
+- Native form builder/renderer/submission.
+- External form handoff with unverified notice.
+- Participation history.
+- Community interactions.
+- Static-route sharing with QR download.
+- Frontend-only auth UI and local session.
+- Protected Profile/My Research/Participation/Bookmarks routes.
+- Auth-aware desktop and mobile navigation.
 
-- Home route: `/`; research detail: `/research/[id]`; participation history: `/profile`.
-- Mock data is the base catalog. Wizard-published posts are prepended and saved through `lib/research-storage.ts` to versioned `sessionStorage` under `valida:session-posts`.
-- Native participation is saved through `lib/participation-storage.ts` to versioned `localStorage` under `valida:participation-history`.
-- `saveParticipation` is idempotent by `postId`. `ResearchDetail` additionally guards against submitting while participation state is set.
-- Every card enters internal detail first. Only `ExternalFormPanel` opens an external destination.
-- `targetAudience` is canonically `string[]`; compatibility normalization in detail is defensive.
-- `responseCount` is a base/mock number. Never present it as network-authoritative.
-- `ValidaLogo.tsx` is canonical; `Logo.tsx` is legacy. Search imports before cleanup.
-- Next build output is `.next-build` by `next.config.mjs`, not `.next`.
+Still intentionally limited:
 
-## Warnings
+- Newly created research is browser-session-local and not publicly shareable.
+- Participation and auth sessions are local to the browser profile.
+- Response counts are not authoritative.
+- External form completion cannot be verified.
+- Forgot Password does not send email.
+- Login/Register do not validate against a backend.
 
-- Do not add backend, auth, Supabase, database tables, or environment requirements without an explicit new sprint.
-- Do not redesign the application, collapse components into route files, or replace external-form support.
-- Do not call external participation verified.
-- Do not claim browser-local state is account-secure, cross-device, private storage, or production persistence.
-- Do not edit/delete duplicate-suffix sync artifacts casually; compare imports and canonical filenames first.
-- Preserve shared UI components and design tokens; orange is not a primary CTA color.
-- Every implementation change must pass `npm run lint` and `npm run build` and should update the project-memory docs.
+## Current git status
 
-## Future sprint recommendation
+At the time of this handoff, v0.6A files have been modified locally in the working tree and should be reviewed before commit/push.
 
-Finish manual v0.4 browser sign-off, then commit/push only when explicitly requested. Do not start another sprint from this handoff. Credits, analytics, AI, uploads, translation, and backend work remain later phases.
+Key validation commands passed:
+
+- `npm run lint`
+- `npm run build`
+
+No dependency install was performed.
+
+## Known issues
+
+- Frontend auth is not secure production authentication; it is local session state only.
+- Protected routes are guarded client-side because no server auth exists yet.
+- Local auth, participation, and community state can be cleared by browser storage cleanup.
+- Local state is not cross-device or cross-browser.
+- Browser-local created research can expire while participation history remains.
+- The Vercel deployment URL is not recorded in the repository, so deployed public access must be verified manually.
+- Manual device QA is still required for iPhone, iPad/tablet, Android, desktop, and QR scan behavior.
+- No automated unit/integration/E2E test suite exists.
+- Duplicate ` 2` suffix sync artifacts may exist; unsuffixed source files are canonical unless imports prove otherwise.
+
+## Remaining backlog
+
+- Manual responsive/device QA pass.
+- Documentation cleanup for any stale v0.5 references in secondary docs.
+- Real backend authentication.
+- Database-backed users, research, responses, bookmarks, and participation history.
+- Email verification/password reset.
+- OAuth providers.
+- Profile editing/avatar upload.
+- Server-backed public links for newly created research.
+- Real bookmarks.
+- Creator dashboard and analytics.
+- Notifications.
+- Credits/rewards.
+- Auto-translation/localization.
+- Media upload and prototype annotation.
+- AI features.
+- Automated test strategy if Product approves test dependencies/frameworks.
+
+## Sprint lock policy
+
+- v0.6A is complete after implementation, changelog, handoff, lint, and production build.
+- Stop implementation after v0.6A.
+- Do not open v0.6B without Product approval.
+- Do not add dependencies without approval.
+- Do not change architecture without approval.
+- Do not introduce backend, database, OAuth, email verification, profile editing, uploads, analytics, AI, credits, notifications, payments, or admin features without explicit locked scope.
+- If a new idea appears, record it for Product review rather than implementing it inside the current sprint.
+
+## Phase roadmap
+
+- **Phase 1 — Community foundation:** MVP complete; future work includes recommendations, moderation, trust, and richer community mechanics.
+- **Phase 2 — Research creation/native surveys:** MVP complete; future work includes drafts, templates, conditional logic, exports, and richer response policy.
+- **Phase 3 — Profiles/personal organization:** local authenticated foundation started; future work includes real profiles, bookmarks, cross-device history, and account settings.
+- **Phase 4 — Sharing/discovery:** static/frontend MVP complete; future work includes server-backed public links, collections, embeds, and richer social previews.
+- **Phase 5 — Research operations:** not started; future work includes creator dashboard, analytics, response management, notifications, and moderation.
+- **Phase 6 — Language/media/advanced feedback:** not started; future work includes localization, auto-translation, uploads, and annotation.
+- **Phase 7 — Intelligence/incentives:** not started; future work includes AI assistance, summaries, credits, rewards, and paid research flows.
+- **Phase 8 — Backend platform:** not started; future work includes real auth, database, authorization, storage, jobs, observability, backups, and billing.
+
+## Next sprint v0.6B readiness
+
+v0.6B is not open.
+
+Before v0.6B, Product should decide whether the next sprint remains frontend-only or begins backend/auth architecture planning. If v0.6B touches real authentication, database persistence, email, OAuth, server APIs, or testing frameworks, those items must be explicitly approved in the locked scope.
+
+Recommended Product decisions before v0.6B:
+
+1. Confirm whether frontend-only auth remains acceptable for another iteration.
+2. Decide whether backend authentication architecture planning begins next.
+3. Decide whether protected research creation is required or whether only Profile/My Research/Participation/Bookmarks remain protected.
+4. Decide whether bookmarks become real storage-backed functionality.
+5. Decide whether automated tests are approved and whether dependencies/frameworks may be added.
+
+Stop here until Product approves the next locked sprint.

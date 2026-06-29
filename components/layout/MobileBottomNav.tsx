@@ -1,12 +1,33 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { getAuthUser } from "@/lib/auth-storage";
 import { navigationItems } from "@/lib/mock-data";
+import type { AuthUser, NavigationItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
 
 export function MobileBottomNav({ onCreateResearch }: { onCreateResearch?: () => void }) {
   const pathname = usePathname();
-  const items = [navigationItems[0], navigationItems[1], navigationItems[2], navigationItems[4], navigationItems[5]];
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const authItems: NavigationItem[] = user
+    ? [navigationItems[4], navigationItems[5]]
+    : [
+      { label: "Log in", mobileLabel: "Login", href: "/login", icon: "user" },
+      { label: "Register", mobileLabel: "Join", href: "/register", icon: "plus" },
+    ];
+  const items = [navigationItems[0], navigationItems[1], navigationItems[2], ...authItems];
+
+  useEffect(() => {
+    const syncUser = () => setUser(getAuthUser());
+    syncUser();
+    window.addEventListener("valida-auth-change", syncUser);
+    window.addEventListener("storage", syncUser);
+    return () => {
+      window.removeEventListener("valida-auth-change", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
+  }, []);
 
   return (
     <nav className="safe-area-nav fixed inset-x-3 z-30 flex items-center justify-around rounded-2xl border border-white/80 bg-white/90 px-2 py-2 shadow-floating backdrop-blur-xl lg:hidden" aria-label="Mobile navigation">

@@ -101,3 +101,13 @@ This ledger records product milestones in implementation order. Labels are inter
 **Deferred by product decision:** public sharing of newly created/session research until authentication and server persistence are approved.
 
 **Validation:** lint, type checking, production build, and QR matrix generation checks pass. Interactive responsive/browser sign-off remains pending because local browser navigation did not respond.
+
+## v0.6A — Frontend authentication foundation
+
+**Objective:** establish the frontend authentication layer and local session flow that later phases can connect to real backend authentication.
+
+**Delivered:** Login, Register, and UI-only Forgot Password pages; frontend-only local auth session storage; minimal architecture-ready user model; logout action; protected Profile, My Research, Participation, and Bookmarks routes; signed-in/signed-out navigation states.
+
+**Preserved:** no backend, database, OAuth provider, email verification, profile editing, avatar upload, credits, notifications, uploads, AI, testing framework, or dependency changes.
+
+**Validation:** `npm run lint` and `npm run build` pass. Stop and wait for Product approval before opening v0.6B.
